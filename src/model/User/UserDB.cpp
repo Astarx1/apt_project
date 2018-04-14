@@ -5,7 +5,7 @@
  * @copyright CNRS
  */
 
-#include "UserDB.hpp"
+#include "model/User/UserDB.hpp"
 
 UserDB::UserDB() : idseq(1) {
     

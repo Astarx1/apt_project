@@ -5,7 +5,7 @@
  * @copyright CNRS
  */
 
-#include "VersionService.hpp"
+#include "view/Service/VersionService.hpp"
 
 VersionService::VersionService () : AbstractService("/version") {
     

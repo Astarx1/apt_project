@@ -14,7 +14,7 @@ protected:
 public:
   void registerService (unique_ptr<AbstractService> service);
   AbstractService* findService (const string& url) const;
-  HttpStatus queryService (string& out, const string& in, const string& url, const string& method);
+  HttpStatus queryService (string& out, const string& in, const string& url, const string& method, const vector<string>& params);
 };
 
 #endif

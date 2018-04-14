@@ -8,8 +8,8 @@
 #ifndef __UserService_hpp__
 #define __UserService_hpp__
 
-#include "AbstractService.hpp"
-#include "UserDB.hpp"
+#include "view/Service/AbstractService.hpp"
+#include "model/User/UserDB.hpp"
 #include "UserService.h"
 
 #endif

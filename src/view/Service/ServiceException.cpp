@@ -5,7 +5,7 @@
  * @copyright CNRS
  */
 
-#include "ServiceException.hpp"
+#include "view/Service/ServiceException.hpp"
 
 
 ServiceException::ServiceException (HttpStatus status, string msg) 

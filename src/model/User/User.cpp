@@ -5,7 +5,7 @@
  * @copyright CNRS
  */
 
-#include "User.hpp"
+#include "model/User/User.hpp"
 
 User::User (string name, int age) : name(name),age(age) {
     

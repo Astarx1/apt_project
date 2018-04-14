@@ -1,11 +1,4 @@
-/** 
- * @file ServicesManager.cpp
- * @author Philippe-Henri Gosselin
- * @date 9 décembre 2015
- * @copyright CNRS
- */
-
-#include "ServicesManager.hpp"
+#include "view/Service/ServicesManager.hpp"
 
 using namespace std;
 
@@ -19,10 +12,13 @@ AbstractService* ServicesManager::findService (const string& url) const {
 
 	while (url[i] != '/' && i < url.size()) ++i;
 	part = url.substr(0, i);
+	std::cout << "ServiceManager.cpp - for " << part << std::endl;
 	
 	for (int i = 0; i < services.size(); ++i) {
-		if (services[i]->getPattern() == part) 
+		if (services[i]->getPattern() == part) {
+			std::cout << "ServiceManager.cpp : We found a service" << std::endl;
 			return services[i].get(); 
+		}
 	}
 
 	/*
@@ -42,12 +38,11 @@ AbstractService* ServicesManager::findService (const string& url) const {
 	throw ServiceException(HttpStatus::NOT_IMPLEMENTED,"Non implanté");
 }
 
-HttpStatus ServicesManager::queryService (string& out, const string& in, const string& url, const string& method) { 
-    //throw ServiceException(HttpStatus::NOT_IMPLEMENTED,"Non implanté");
+HttpStatus ServicesManager::queryService (string& out, const string& in, const string& url, const string& method, const vector<string>& params) { 
 	Json::Value jsonObj;
-    
+    HttpStatus r;
+
     AbstractService* as = findService(url);
-    
     std::string part;
 	int i = 1;
 	while (url[i] != '/' && i < url.size()) ++i;
@@ -56,18 +51,23 @@ HttpStatus ServicesManager::queryService (string& out, const string& in, const s
     if (part.size() > 0) i = atoi(part.c_str());
      
     if (method == "GET") {
-    	as->get(jsonObj, 0);
+    	r = as->get(jsonObj, params);
     	out = jsonObj.toStyledString();
     }
     if (method == "POST") {
-    	as->post(jsonObj, 0);
+		Json::Reader reader;
+    	reader.parse(in.c_str(), jsonObj);
+    	r = as->post(jsonObj, params);
+    	out = std::string("ok");
     }
     if (method == "PUT") {
-    	as->put(jsonObj, jsonObj);
+    	r = as->put(jsonObj, jsonObj);
     }
     if (method == "REMOVE") {
-    	as->remove(0);
+    	r = as->remove(params);
     }
+
+    return r;
 }
 
 

@@ -27,3 +27,5 @@ target_link_libraries(tdrest "${PROJECT_SOURCE_DIR}/extern/libmicrohttpd/lib/lib
 
 include_directories ("/usr/include")
 target_link_libraries(tdrest "/usr/lib/x86_64-linux-gnu/libmysqlcppconn.so")
+
+target_link_libraries(tdrest "${PROJECT_SOURCE_DIR}/pistache/build/src/libpistache.a")
