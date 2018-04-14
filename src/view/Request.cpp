@@ -119,6 +119,7 @@ main_handler (void *cls,
     else {
          mhd_response = MHD_create_response_from_data(0,NULL,0,0);
     }       
+    
     std::cout << connection << std::endl;       
     std::cout << status << std::endl;       
     std::cout << mhd_response << std::endl;
