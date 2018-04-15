@@ -26,6 +26,7 @@ ExecuteResult ConMySQL::execute (std::string query) {
 	ExecuteResult h;
 
 	try { 
+		std::cout << "MySQLLink.cpp - Executing request " << query << std::endl;
 	    stmt = con->createStatement();
 	    stmt->execute("USE goranking");
 		h.link_result(stmt->executeQuery(query));

@@ -1,26 +1,36 @@
-#include "pistache/endpoint.h"
+#include <pistache/http.h>
+#include <pistache/description.h>
+#include <pistache/endpoint.h>
 
+#include <pistache/serializer/rapidjson.h>
+
+#include "view/ServiceManager.h"
+
+using namespace std;
 using namespace Pistache;
 
-class HelloHandler : public Http::Handler {
-public:
 
-    HTTP_PROTOTYPE(HelloHandler)
+int main(int argc, char *argv[]) {
+    Port port(9080);
 
-    void onRequest(const Http::Request& request, Http::ResponseWriter response) {
-        response.send(Http::Code::Ok, "Hello World");
+    int thr = 2;
+
+    if (argc >= 2) {
+        port = std::stol(argv[1]);
+
+        if (argc == 3)
+            thr = std::stol(argv[2]);
     }
-};
 
-int main() {
-    Pistache::Address addr(Pistache::Ipv4::any(), Pistache::Port(9080));
-    auto opts = Pistache::Http::Endpoint::options()
-        .threads(1);
+    Address addr(Ipv4::any(), port);
 
-    Http::Endpoint server(addr);
-    server.init(opts);
-    server.setHandler(Http::make_handler<HelloHandler>());
-    server.serve();
+    cout << "Cores = " << hardware_concurrency() << endl;
+    cout << "Using " << thr << " threads" << endl;
 
-    server.shutdown();
+    ServiceManager manager(addr);
+
+    manager.init(thr);
+    manager.start();
+
+    manager.shutdown();
 }

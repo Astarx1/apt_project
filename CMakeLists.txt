@@ -14,6 +14,8 @@ ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
 # jsoncpp
 include_directories ("${PROJECT_SOURCE_DIR}/include")
+include_directories ("${PROJECT_SOURCE_DIR}/include/legacy")
+
 set(jsoncpp_sources extern/jsoncpp-0.10.5/dist/jsoncpp.cpp)
 find_package (Threads)
 
