@@ -36,6 +36,22 @@ void ServiceManager::setupRoutes() {
     Routes::Get(router, "/players", Routes::bind(&ServiceManager::get_all_players, this));
 }
 
+void ServiceManager::post_new_game(const Rest::Request& request, Http::ResponseWriter response) {
+    try {
+        std::cout << "ServiceManager.cpp - Analysing request for creating new game" << std::endl; 
+
+        Player ret = player_controler->create();
+        std::string out = ret.to_json_string();
+
+        std::cout << "ServiceManager.cpp - Sending answer for creating new player" << std::endl; 
+        response.send(Http::Code::Ok, out);       
+        std::cout << "ServiceManager.cpp - Answer sent for creating new player\n" << std::endl;
+    }
+    catch(...) {
+        std::cout << "ServiceManager.cpp - exception occured in the view in post_new_player" << std::endl;
+    }
+}
+
 void ServiceManager::post_new_player(const Rest::Request& request, Http::ResponseWriter response) {
     try {
         std::cout << "ServiceManager.cpp - Analysing request for creating new player" << std::endl; 

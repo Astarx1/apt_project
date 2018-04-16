@@ -6,7 +6,7 @@
 #include "usual.h"
 #include "model/MySQLLink.h"
 #include "model/ExecuteResult.h"
-#include "Player.h"
+#include "model/Player/Player.h"
 
 class PlayerDB {
 public:
