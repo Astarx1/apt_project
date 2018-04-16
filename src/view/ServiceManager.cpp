@@ -29,7 +29,7 @@ void ServiceManager::setupRoutes() {
     using namespace Rest;
 
     Routes::Get(router, "/player/:id", Routes::bind(&ServiceManager::get_player_from_id, this));
-    //Routes::Delete(router, "/player/:id", Routes::bind(&ServiceManager::get_player_from_id, this));
+    Routes::Delete(router, "/player/:id", Routes::bind(&ServiceManager::delete_player_from_id, this));
 
     Routes::Post(router, "/player", Routes::bind(&ServiceManager::post_new_player, this));
     
@@ -57,9 +57,14 @@ void ServiceManager::get_all_players(const Rest::Request& request, Http::Respons
 void ServiceManager::get_player_from_id(const Rest::Request& request, Http::ResponseWriter response) {
     auto id = request.param(":id").as<int>();
     
-    Player ret = player_controler->read(id);
+    Player ret = player_controler->read_from_id(id);
     std::string out = ret.to_json_string();
     response.send(Http::Code::Ok, out);  
+}
 
-    response.send(Http::Code::Ok, "Ok"); 
+void ServiceManager::delete_player_from_id(const Rest::Request& request, Http::ResponseWriter response) {
+    auto id = request.param(":id").as<int>();
+    
+    Player ret = player_controler->delete_from_id(id);
+    response.send(Http::Code::Ok, "Ok");  
 }

@@ -11,3 +11,11 @@ Player PlayerControler::create() {
 std::vector<Player> PlayerControler::get() {
 	return db.read_players();
 }
+
+Player PlayerControler::read_from_id(int id) {
+	return db.read_player_from_id(id);
+}
+
+Player PlayerControler::delete_from_id(int id){
+	return db.delete_player_from_id(id);	
+}

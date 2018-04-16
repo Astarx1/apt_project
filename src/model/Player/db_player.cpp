@@ -51,8 +51,34 @@ std::vector<Player> PlayerDB::read_players() {
 }
 
 Player PlayerDB::read_player_from_id(int id) {
-	std::string req = "SELECT * FROM PLAYERS WHERE id_player=";
-	req = req + std::to_string(id);
-	ExecuteResult r = sql_link->execute(req);
-	return Player(0);
+	Player ret(-1);
+	try {
+		std::string req = "SELECT * FROM PLAYERS WHERE id_player=";
+		req = req + std::to_string(id);
+		ExecuteResult r = sql_link->execute(req);
+
+		while(r.get_link_result()->next()) {
+			ret.setId(r.get_link_result()->getInt("id_player"));
+			ret.setLevel(r.get_link_result()->getDouble("current_level"));
+			ret.setTrivia(r.get_link_result()->getString("trivia_player"));
+		}
+	}
+	catch(...) {
+		std::cout << "Unable to read player" << id << std::endl;		
+	}
+	return ret;
+}
+
+Player PlayerDB::delete_player_from_id(int id) {
+	Player ret(-1);
+
+	try {
+		std::string req = "DELETE FROM PLAYERS WHERE id_player=";
+		req = req + std::to_string(id);
+		ExecuteResult r = sql_link->execute(req);	
+	}
+	catch(...) {
+		std::cout << "Unable to delete player" << id << std::endl;		
+	}
+	return ret;	
 }
