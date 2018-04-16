@@ -1,5 +1,5 @@
-#include "controler/Player/GameControler.h"
+#include "controler/Game/GameControler.h"
 
-GameControler::GameControler(ConMySQL * msql) : msql(msql), db(PlayerDB(msql)) {
+GameControler::GameControler(ConMySQL * msql) : msql(msql), db(GameDB(msql)) {
 	;
 }
