@@ -40,10 +40,12 @@ std::vector<Player> PlayerDB::read_players() {
 		std::string req = "SELECT * FROM PLAYERS";
 		ExecuteResult r = sql_link->execute(req);
 		Player tmp;
-		tmp.setId(r.get_link_result()->getInt("id_player"));
-		tmp.setLevel(r.get_link_result()->getDouble("current_level"));
-		tmp.setTrivia(r.get_link_result()->getString("trivia_player"));
-		players.push_back(tmp);
+		while(r.get_link_result()->next()) {
+			tmp.setId(r.get_link_result()->getInt("id_player"));
+			tmp.setLevel(r.get_link_result()->getDouble("current_level"));
+			tmp.setTrivia(r.get_link_result()->getString("trivia_player"));
+			players.push_back(tmp);
+		}
 	}
 	catch(...) {
 		std::cout << "db_player.cpp - Unable to read all players" << std::endl;
