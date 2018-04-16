@@ -28,7 +28,11 @@ void ServiceManager::shutdown() {
 void ServiceManager::setupRoutes() {
     using namespace Rest;
 
+    Routes::Get(router, "/player/:id", Routes::bind(&ServiceManager::get_player_from_id, this));
+    //Routes::Delete(router, "/player/:id", Routes::bind(&ServiceManager::get_player_from_id, this));
+
     Routes::Post(router, "/player", Routes::bind(&ServiceManager::post_new_player, this));
+    
     Routes::Get(router, "/players", Routes::bind(&ServiceManager::get_all_players, this));
 }
 
@@ -48,4 +52,14 @@ void ServiceManager::get_all_players(const Rest::Request& request, Http::Respons
     std::string r = val.toStyledString();
 
     response.send(Http::Code::Ok, r);       
+}
+
+void ServiceManager::get_player_from_id(const Rest::Request& request, Http::ResponseWriter response) {
+    auto id = request.param(":id").as<int>();
+    
+    Player ret = player_controler->read(id);
+    std::string out = ret.to_json_string();
+    response.send(Http::Code::Ok, out);  
+
+    response.send(Http::Code::Ok, "Ok"); 
 }

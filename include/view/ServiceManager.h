@@ -30,9 +30,11 @@ public:
 
 private:
     void setupRoutes();
+
     void post_new_player(const Rest::Request& request, Http::ResponseWriter response);
     void get_all_players(const Rest::Request& request, Http::ResponseWriter response);
-
+    void get_player_from_id(const Rest::Request& request, Http::ResponseWriter response);
+    
     PlayerControler * player_controler;
     ConMySQL * msql;
 
