@@ -12,13 +12,13 @@ class ConMySQL {
     	~ConMySQL();
 
     	ExecuteResult execute(std::string query);
+		void update (std::string query);
 
     private:
    		bool initialized;
 
    		sql::Driver* driver;
         sql::Connection* con;
-        sql::Statement* stmt;
         sql::ResultSet* res;
 };
 

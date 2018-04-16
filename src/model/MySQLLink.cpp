@@ -26,21 +26,37 @@ ConMySQL::~ConMySQL () {
 }
 
 ExecuteResult ConMySQL::execute (std::string query) {
-	ExecuteResult h;
+	ExecuteResult h(query);
 
 	try { 
 	    std::cout << "MySQLLink.cpp - Creating Query statement" << std::endl;
-	    stmt = con->createStatement();
+	    sql::Statement* stmt = con->createStatement();
 		std::cout << "MySQLLink.cpp - Executing request : " << query << std::endl;
-		h.link_result(stmt->executeQuery(query));
-		std::cout << "MySQLLink.cpp - Request executed : " << query << std::endl;
-
+		sql::ResultSet * rs = stmt->executeQuery(query);
+		std::cout << "MySQLLink.cpp - Request executed : " << query << ", linking result" << std::endl;
+		h.link_result(rs);
+		std::cout << "MySQLLink.cpp - Request linked, deleting statemement" << std::endl;
 	  	delete stmt;
 	}
 	catch(std::exception& e) {
 		std::cout << "Unable to perform query : " + query << std::endl;
-		e.what();
+		std::cout << e.what() << std::endl;
 	} 
 
 	return h;
+}
+
+void ConMySQL::update (std::string query) {
+	try { 
+	    std::cout << "MySQLLink.cpp - Creating Query statement" << std::endl;
+	    sql::Statement* stmt = con->createStatement();
+		std::cout << "MySQLLink.cpp - Executing request : " << query << std::endl;
+		stmt->executeUpdate(query);
+		std::cout << "MySQLLink.cpp - Request linked, deleting statemement" << std::endl;
+	  	delete stmt;
+	}
+	catch(std::exception& e) {
+		std::cout << "Unable to perform query : " + query << std::endl;
+		std::cout << e.what() << std::endl;
+	} 	
 }

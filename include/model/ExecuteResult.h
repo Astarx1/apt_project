@@ -5,7 +5,7 @@
 
 class ExecuteResult {
 public:
-	ExecuteResult();
+	ExecuteResult(std::string query);
 	~ExecuteResult();
 	
 	bool isValid();
@@ -13,6 +13,7 @@ public:
 	sql::ResultSet * get_link_result();
 
 private:
+	std::string query;
 	bool valid;
 	sql::ResultSet * l;
 };

@@ -46,6 +46,7 @@ void ServiceManager::post_new_player(const Rest::Request& request, Http::Respons
         std::cout << "ServiceManager.cpp - Sending answer for creating new player" << std::endl; 
         response.send(Http::Code::Ok, out);       
         std::cout << "ServiceManager.cpp - Answer sent for creating new player\n" << std::endl;
+    }
     catch(...) {
         std::cout << "ServiceManager.cpp - exception occured in the view in post_new_player" << std::endl;
     }

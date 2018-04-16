@@ -6,8 +6,10 @@ Player PlayerDB::create_player() {
 	Player p(0);
 	PlayerDB::mx.lock();
 	try {
+		std::cout << "db_player.h - Sending DB request to create new player" << std::endl;
 		std::string req = "INSERT INTO PLAYERS (current_level, trivia_player) VALUES (1000,'none')";
-		ExecuteResult r = sql_link->execute(req);
+		sql_link->update(req);
+
 		std::cout << "db_player.h - Query done, returning infos about the player" << std::endl;
 		req = "SELECT id_player FROM PLAYERS ORDER BY id_player DESC LIMIT 1";
 		ExecuteResult r2 = sql_link->execute(req);
@@ -16,7 +18,7 @@ Player PlayerDB::create_player() {
 			std::cout << "db_player.h - Error in query return" << std::endl;
 		}
 		while(r2.get_link_result()->next()) {
-			std::cout << "db_player.h - Attributing the ID " << r2.get_link_result()->getInt("id_player") << std::endl;
+			std::cout << "db_player.h - Attributing the ID " << r2.get_link_result()->getInt("id_player") << " from " << r2.get_link_result() << std::endl;
 			p.setId(r2.get_link_result()->getInt("id_player"));
 		}
 		std::cout << "db_player.h - Infos about player got and will be sent" << std::endl;
@@ -37,13 +39,11 @@ std::vector<Player> PlayerDB::read_players() {
 	try {
 		std::string req = "SELECT * FROM PLAYERS";
 		ExecuteResult r = sql_link->execute(req);
-		while(r.get_link_result()->next()) {
-			Player tmp;
-			tmp.setId(r.get_link_result()->getInt("id_player"));
-			tmp.setLevel(r.get_link_result()->getDouble("current_level"));
-			tmp.setTrivia(r.get_link_result()->getString("trivia_player"));
-			players.push_back(tmp);
-		}
+		Player tmp;
+		tmp.setId(r.get_link_result()->getInt("id_player"));
+		tmp.setLevel(r.get_link_result()->getDouble("current_level"));
+		tmp.setTrivia(r.get_link_result()->getString("trivia_player"));
+		players.push_back(tmp);
 	}
 	catch(...) {
 		std::cout << "db_player.cpp - Unable to read all players" << std::endl;
