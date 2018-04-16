@@ -86,7 +86,7 @@ Player PlayerDB::delete_player_from_id(int id) {
 	try {
 		std::string req = "DELETE FROM PLAYERS WHERE id_player=";
 		req = req + std::to_string(id);
-		ExecuteResult r = sql_link->update(req);	
+		sql_link->update(req);	
 	}
 	catch(...) {
 		std::cout << "db_player.cpp - Unable to delete player" << id << std::endl;		
