@@ -29,6 +29,27 @@ Player PlayerDB::create_player() {
 	return p;
 }
 
+std::vector<Player> PlayerDB::read_players() {
+	std::vector<Player> players;
+	
+	try {
+		std::string req = "SELECT * FROM PLAYERS";
+		ExecuteResult r = sql_link->execute(req);
+		while(r.get_link_result()->next()) {
+			Player tmp;
+			tmp.setId(r.get_link_result()->getInt("id_player"));
+			tmp.setLevel(r.get_link_result()->getDouble("current_level"));
+			tmp.setTrivia(r.get_link_result()->getString("trivia_player"));
+			players.push_back(tmp);
+		}
+	}
+	catch(...) {
+		std::cout << "Unable to read all players" << std::endl;
+	}
+
+	return players;
+}
+
 Player PlayerDB::read_player_from_id(int id) {
 	std::string req = "SELECT * FROM PLAYERS WHERE id_player=";
 	req = req + std::to_string(id);

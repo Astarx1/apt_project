@@ -3,13 +3,9 @@
 
 class PlayerControler {
 public:
-	PlayerControler(ConMySQL * msql) : msql(msql), db(PlayerDB(msql)) {
-		;
-	}
-
-	Player create() {
-		return db.create_player();		
-	}
+	PlayerControler(ConMySQL * msql);
+	Player create();
+	std::vector<Player> get();
 
 private:
 	PlayerDB db;	

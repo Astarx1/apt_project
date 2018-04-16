@@ -16,6 +16,7 @@ public:
 
 	Player read_player_from_id(int id);
 	Player create_player();
+	std::vector<Player> read_players();
 
 private:
 	ConMySQL * sql_link;

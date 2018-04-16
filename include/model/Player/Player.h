@@ -30,6 +30,7 @@ public:
 	    val["id_player"] = id_player;
 	    return val;
 	}
+	
 private:
 	int id_player;
 	float current_level;

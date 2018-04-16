@@ -5,7 +5,5 @@
 using namespace Pistache;
 
 namespace Generic {
-void handleReady(const Rest::Request&, Http::ResponseWriter response) {
-    response.send(Http::Code::Ok, "1");
-}
+void handleReady(const Rest::Request&, Http::ResponseWriter response);
 }
