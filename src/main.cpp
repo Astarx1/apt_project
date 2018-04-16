@@ -5,6 +5,7 @@
 #include <pistache/serializer/rapidjson.h>
 
 #include "view/ServiceManager.h"
+#include "model/MySQLLink.h"
 
 using namespace std;
 using namespace Pistache;
@@ -12,7 +13,7 @@ using namespace Pistache;
 
 int main(int argc, char *argv[]) {
     Port port(9080);
-
+    ConMySQL * msql = new ConMySQL(); 
     int thr = 2;
 
     if (argc >= 2) {
@@ -27,10 +28,12 @@ int main(int argc, char *argv[]) {
     cout << "Cores = " << hardware_concurrency() << endl;
     cout << "Using " << thr << " threads" << endl;
 
-    ServiceManager manager(addr);
+    ServiceManager manager(addr, msql);
 
     manager.init(thr);
     manager.start();
+
+    auto c = getchar();
 
     manager.shutdown();
 }

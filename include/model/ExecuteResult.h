@@ -1,3 +1,6 @@
+#ifndef EXECUTE_RESULT_H
+#define EXECUTE_RESULT_H
+
 #include "usual.h"
 
 class ExecuteResult {
@@ -13,3 +16,5 @@ private:
 	bool valid;
 	sql::ResultSet * l;
 };
+
+#endif

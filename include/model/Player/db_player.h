@@ -1,25 +1,24 @@
 #ifndef DB_PLAYER_H
 #define DB_PLAYER_H
 
+#include <mutex>
+
 #include "usual.h"
+#include "model/MySQLLink.h"
+#include "model/ExecuteResult.h"
 #include "Player.h"
 
 class PlayerDB {
 public:
-	Player read_player_from_id(int id) {
-		std::string req = "SELECT * FROM PLAYERS WHERE id_player=";
-		req = req << id;
-		ExecuteResult r = sql_link->execute(req);
-		return Player(0);
-	}
+	static std::mutex mx;
+	PlayerDB(ConMySQL * msql) : sql_link(msql) 
+	{}
 
-	void create_player() {
-		std::string req = "INSERT INTO PLAYERS (id_player, current_level, trivia_player) VALUES (,1000,'none')";
-		ExecuteResult r = sql_link->execute(req);
-	}
+	Player read_player_from_id(int id);
+	Player create_player();
 
 private:
 	ConMySQL * sql_link;
-}
+};
 
 #endif

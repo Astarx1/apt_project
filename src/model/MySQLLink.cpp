@@ -6,8 +6,11 @@ ConMySQL::ConMySQL () {
 	try {
         driver = get_driver_instance();
         con = driver->connect("tcp://127.0.0.1:3306", MYSQL_USER, MYSQL_PWD);
-        if(con->isValid())
+        con->setSchema("goranking");
+        if(con->isValid()) {
 	        initialized = true;
+		    std::cout << "MySQLLink.cpp - Database connected" << std::endl;
+        }
 	    else
 	    	throw std::exception();
 
@@ -26,15 +29,17 @@ ExecuteResult ConMySQL::execute (std::string query) {
 	ExecuteResult h;
 
 	try { 
-		std::cout << "MySQLLink.cpp - Executing request " << query << std::endl;
+	    std::cout << "MySQLLink.cpp - Creating Query statement" << std::endl;
 	    stmt = con->createStatement();
-	    stmt->execute("USE goranking");
+		std::cout << "MySQLLink.cpp - Executing request : " << query << std::endl;
 		h.link_result(stmt->executeQuery(query));
+		std::cout << "MySQLLink.cpp - Request executed : " << query << std::endl;
 
 	  	delete stmt;
 	}
 	catch(std::exception& e) {
-		std::cout << "Unable to perform query" + query << std::endl;
+		std::cout << "Unable to perform query : " + query << std::endl;
+		e.what();
 	} 
 
 	return h;

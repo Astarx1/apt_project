@@ -1,8 +1,11 @@
 #include "model/ExecuteResult.h"
 
 ExecuteResult::ExecuteResult() : valid(false) {}
+
 ExecuteResult::~ExecuteResult() {
+	std::cout << "ExecuteResult.cpp - Erasing the result" << std::endl;
 	delete l;
+	std::cout << "ExecuteResult.cpp - Result erased" << std::endl;
 }
 
 bool ExecuteResult::isValid() {

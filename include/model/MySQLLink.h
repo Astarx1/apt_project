@@ -1,6 +1,5 @@
-/* 
- * @file https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
- */
+#ifndef MYSQLLINK_H
+#define MYSQLLINK_H
 
 #include "usual.h"
 #include "ignored/passwd.h"
@@ -22,3 +21,5 @@ class ConMySQL {
         sql::Statement* stmt;
         sql::ResultSet* res;
 };
+
+#endif
