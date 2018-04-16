@@ -30,6 +30,8 @@ Player PlayerDB::create_player() {
 }
 
 std::vector<Player> PlayerDB::read_players() {
+	std::cout << "db_player.cpp - Reading all players" << std::endl;
+
 	std::vector<Player> players;
 	
 	try {
@@ -44,13 +46,17 @@ std::vector<Player> PlayerDB::read_players() {
 		}
 	}
 	catch(...) {
-		std::cout << "Unable to read all players" << std::endl;
+		std::cout << "db_player.cpp - Unable to read all players" << std::endl;
 	}
+
+	std::cout << "db_player.cpp - Read of all players ended" << std::endl;
 
 	return players;
 }
 
 Player PlayerDB::read_player_from_id(int id) {
+	std::cout << "db_player.cpp - Readind from player " << id << std::endl;		
+
 	Player ret(-1);
 	try {
 		std::string req = "SELECT * FROM PLAYERS WHERE id_player=";
@@ -64,8 +70,10 @@ Player PlayerDB::read_player_from_id(int id) {
 		}
 	}
 	catch(...) {
-		std::cout << "Unable to read player" << id << std::endl;		
+		std::cout << "db_player.cpp - Unable to read player" << id << std::endl;		
 	}
+	
+	std::cout << "db_player.cpp - Readind from player " << id << " ended, returning the result" << std::endl;		
 	return ret;
 }
 
@@ -78,7 +86,7 @@ Player PlayerDB::delete_player_from_id(int id) {
 		ExecuteResult r = sql_link->execute(req);	
 	}
 	catch(...) {
-		std::cout << "Unable to delete player" << id << std::endl;		
+		std::cout << "db_player.cpp - Unable to delete player" << id << std::endl;		
 	}
 	return ret;	
 }

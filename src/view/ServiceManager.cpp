@@ -37,12 +37,19 @@ void ServiceManager::setupRoutes() {
 }
 
 void ServiceManager::post_new_player(const Rest::Request& request, Http::ResponseWriter response) {
+    std::cout << "ServiceManager.cpp - Analysing request for creating new player" << std::endl; 
+
     Player ret = player_controler->create();
     std::string out = ret.to_json_string();
+
+    std::cout << "ServiceManager.cpp - Sending answer for creating new player" << std::endl; 
     response.send(Http::Code::Ok, out);       
+    std::cout << "ServiceManager.cpp - Answer sent for creating new player\n" << std::endl;
 }
 
 void ServiceManager::get_all_players(const Rest::Request& request, Http::ResponseWriter response) {
+    std::cout << "ServiceManager.cpp - Analysing request for getting all players" << std::endl; 
+    
     std::vector<Player> ret = player_controler->get();
     
     Json::Value val;
@@ -51,15 +58,23 @@ void ServiceManager::get_all_players(const Rest::Request& request, Http::Respons
     }
     std::string r = val.toStyledString();
 
+    std::cout << "ServiceManager.cpp - Sending answer for getting all players" << std::endl; 
     response.send(Http::Code::Ok, r);       
+    std::cout << "ServiceManager.cpp - Answer sent for getting all player\n" << std::endl;
 }
 
 void ServiceManager::get_player_from_id(const Rest::Request& request, Http::ResponseWriter response) {
+    std::cout << "ServiceManager.cpp - Analysing request for getting player from id" << std::endl; 
+    
     auto id = request.param(":id").as<int>();
     
     Player ret = player_controler->read_from_id(id);
     std::string out = ret.to_json_string();
+
+    std::cout << "ServiceManager.cpp - Sending answer for getting player from id" << std::endl; 
     response.send(Http::Code::Ok, out);  
+    
+    std::cout << "ServiceManager.cpp - Answer sent for getting player from id\n" << std::endl; 
 }
 
 void ServiceManager::delete_player_from_id(const Rest::Request& request, Http::ResponseWriter response) {
