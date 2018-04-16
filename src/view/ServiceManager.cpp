@@ -40,5 +40,12 @@ void ServiceManager::post_new_player(const Rest::Request& request, Http::Respons
 
 void ServiceManager::get_all_players(const Rest::Request& request, Http::ResponseWriter response) {
     std::vector<Player> ret = player_controler->get();
-    response.send(Http::Code::Ok, "Ok");       
+    
+    Json::Value val;
+    for (int i=0; i < ret.size(); i++) {
+        val.append(ret[i].to_json());
+    }
+    std::string r = val.toStyledString();
+
+    response.send(Http::Code::Ok, r);       
 }
