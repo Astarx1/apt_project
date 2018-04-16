@@ -93,8 +93,19 @@ void ServiceManager::get_player_from_id(const Rest::Request& request, Http::Resp
 }
 
 void ServiceManager::delete_player_from_id(const Rest::Request& request, Http::ResponseWriter response) {
-    auto id = request.param(":id").as<int>();
-    
-    Player ret = player_controler->delete_from_id(id);
-    response.send(Http::Code::Ok, "Ok");  
+    try {
+        std::cout << "ServiceManager.cpp - Analysing request for getting player from id" << std::endl; 
+
+        auto id = request.param(":id").as<int>();
+        
+        Player ret = player_controler->delete_from_id(id);
+        
+        std::cout << "ServiceManager.cpp - Sending answer for deleting player from id" << std::endl; 
+        response.send(Http::Code::Ok, "Ok");  
+        
+        std::cout << "ServiceManager.cpp - Answer sent for deleting player from id\n" << std::endl; 
+    }
+    catch(...) {
+        std::cout << "ServiceManager.cpp - exception occured in the view in get_player_from_id" << std::endl;
+    }
 }

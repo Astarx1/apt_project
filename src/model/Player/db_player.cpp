@@ -80,15 +80,18 @@ Player PlayerDB::read_player_from_id(int id) {
 }
 
 Player PlayerDB::delete_player_from_id(int id) {
+	std::cout << "db_player.cpp - Deleting player " << id << std::endl;		
 	Player ret(-1);
 
 	try {
 		std::string req = "DELETE FROM PLAYERS WHERE id_player=";
 		req = req + std::to_string(id);
-		ExecuteResult r = sql_link->execute(req);	
+		ExecuteResult r = sql_link->update(req);	
 	}
 	catch(...) {
 		std::cout << "db_player.cpp - Unable to delete player" << id << std::endl;		
 	}
+
+	std::cout << "db_player.cpp - Deleting player " << id << " ended, returning the result" << std::endl;		
 	return ret;	
 }

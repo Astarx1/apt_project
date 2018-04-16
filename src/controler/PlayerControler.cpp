@@ -28,5 +28,8 @@ Player PlayerControler::read_from_id(int id) {
 }
 
 Player PlayerControler::delete_from_id(int id){
-	return db.delete_player_from_id(id);	
+	std::cout << "PlayerControler.cpp - Controling read for player id " << id << std::endl;
+	Player t = db.delete_player_from_id(id);	
+	std::cout << "PlayerControler.cpp - Controling read for player id " << id << " ended, returning the result" << std::endl;
+	return t;
 }
