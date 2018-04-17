@@ -1,6 +1,10 @@
+#ifndef SERVICE_MANAGER_H
+#define SERVICE_MANAGER_H
+
 #include "model/MySQLLink.h"
 
 #include "controler/Player/PlayerControler.h"
+#include "controler/Game/GameControler.h"
 
 #include "view/Generic.h"
 
@@ -39,9 +43,12 @@ private:
     void post_new_game(const Rest::Request& request, Http::ResponseWriter response);
     
     PlayerControler * player_controler;
+    GameControler * game_controler;
     ConMySQL * msql;
 
     std::shared_ptr<Http::Endpoint> httpEndpoint;
     Rest::Router router;
 
 };
+
+#endif

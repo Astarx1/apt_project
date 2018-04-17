@@ -1,11 +1,15 @@
 #include "view/ServiceManager.h"
 
-ServiceManager::ServiceManager(Address addr, ConMySQL * msql)
-    : httpEndpoint(std::make_shared<Http::Endpoint>(addr)), msql(msql), player_controler(new PlayerControler(msql))
+ServiceManager::ServiceManager(Address addr, ConMySQL * msql) : 
+    httpEndpoint(std::make_shared<Http::Endpoint>(addr)), 
+    msql(msql), 
+    player_controler(new PlayerControler(msql)), 
+    game_controler(new GameControler(msql))
 { }
 
 ServiceManager::~ServiceManager(){
     delete player_controler;
+    delete game_controler;
 }
 
 void ServiceManager::init(size_t thr) {
@@ -34,21 +38,34 @@ void ServiceManager::setupRoutes() {
     Routes::Post(router, "/player", Routes::bind(&ServiceManager::post_new_player, this));
     
     Routes::Get(router, "/players", Routes::bind(&ServiceManager::get_all_players, this));
+
+    Routes::Post(router, "/game", Routes::bind(&ServiceManager::post_new_game, this));
 }
 
 void ServiceManager::post_new_game(const Rest::Request& request, Http::ResponseWriter response) {
     try {
         std::cout << "ServiceManager.cpp - Analysing request for creating new game" << std::endl; 
 
-        Player ret = player_controler->create();
+        std::string r = request.body()
+
+        Json::Value input;   
+        Json::Reader reader;
+        bool parsingresult = reader.parse(strJson.c_str(), input);
+        if ( !parsingSuccessful ) {
+            std::cout  << "ServiceManager.cpp - Failed to parse json" << reader.getFormattedErrorMessages();
+            response.send(Http::Code::Bad_Request, out);
+            return;       
+        }
+
+        Game ret = game_controler->create(input);
         std::string out = ret.to_json_string();
 
-        std::cout << "ServiceManager.cpp - Sending answer for creating new player" << std::endl; 
+        std::cout << "ServiceManager.cpp - Sending answer for creating new game" << std::endl; 
         response.send(Http::Code::Ok, out);       
-        std::cout << "ServiceManager.cpp - Answer sent for creating new player\n" << std::endl;
+        std::cout << "ServiceManager.cpp - Answer sent for creating new game\n" << std::endl;
     }
     catch(...) {
-        std::cout << "ServiceManager.cpp - exception occured in the view in post_new_player" << std::endl;
+        std::cout << "ServiceManager.cpp - exception occured in the view in post_new_game" << std::endl;
     }
 }
 
@@ -117,7 +134,7 @@ void ServiceManager::delete_player_from_id(const Rest::Request& request, Http::R
         Player ret = player_controler->delete_from_id(id);
         
         std::cout << "ServiceManager.cpp - Sending answer for deleting player from id" << std::endl; 
-        response.send(Http::Code::Ok, "Ok");  
+        response.send(Http::Code::Ok, ret.to_json_string());  
         
         std::cout << "ServiceManager.cpp - Answer sent for deleting player from id\n" << std::endl; 
     }

@@ -5,7 +5,7 @@
 class GameControler {
 public:
 	GameControler(ConMySQL * msql);
-	Game create();
+	Game create(int id_player_1, int id_player_2, std::string moves);
 	
 private:
 	ConMySQL * msql;
