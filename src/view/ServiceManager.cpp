@@ -44,24 +44,70 @@ void ServiceManager::setupRoutes() {
 
 void ServiceManager::post_new_game(const Rest::Request& request, Http::ResponseWriter response) {
     try {
-        std::cout << "ServiceManager.cpp - Analysing request for creating new game, creating adequate Json reader..." << std::endl; 
+        std::cout << "ServiceManager.cpp - Analysing request for creating new game, getting body..." << std::endl; 
 
         std::string r = request.body();
 
+        std::cout << "ServiceManager.cpp - body got, creating adequate Json reader...\n" << r << std::endl;
+
         Json::Value input;   
         Json::Reader reader;
-        bool parsingresult = reader.parse(r.c_str(), input);
+        bool parsingresult = reader.parse(r, input);
         if (!parsingresult) {
             std::cout  << "ServiceManager.cpp - Failed to parse json" << reader.getFormattedErrorMessages() << "\n" << std::endl;
             response.send(Http::Code::Bad_Request, std::string("Request badly formatted : ") + r);
             return;       
         }
+        parsingresult = reader.parse(input.asString(), input);
+        if (!parsingresult) {
+            std::cout  << "ServiceManager.cpp - Failed to parse json" << reader.getFormattedErrorMessages() << "\n" << std::endl;
+            response.send(Http::Code::Bad_Request, std::string("Request badly formatted : ") + r);
+            return;       
+        }
+        std::cout << "ServiceManager.cpp - Error when processing the JSON : " << reader.getFormattedErrorMessages() << std::endl; 
 
         Json::FastWriter fast;
+        try {
+            /*std::cout << "get member names" << std::endl;
+            auto g = input.getMemberNames();
+            std::cout << "get member names" << std::endl;
+            for (auto a : g) {
+                std::cout << a << std::endl;
+            }*/ 
+                    std::cout << "test idp1" << std::endl;
+        Json::Value val = input;
+        switch (input.type()) {
+            case Json::nullValue: cout << "null\n"; break;
+            case Json::intValue: cout << "int " << val.asLargestInt() << "\n"; break;
+            case Json::uintValue: cout << "uint " << val.asLargestUInt() << "\n"; break;
+            case Json::realValue: cout << "real " << val.asDouble() << "\n"; break;
+            case Json::stringValue: cout << "string " << val.asString() << "\n"; break;
+            /*
+            -or-
+            case Json::stringValue: {
+                const char *begin;
+                const char *end;
+                val.getString(&begin, &end);
+                cout << "string of length " << end - begin << "\n";
+            }
+            break;
+            */
+            case Json::booleanValue: cout << "boolean " << val.asBool() << "\n"; break;
+            case Json::arrayValue: cout << "array of length " << val.size() << "\n"; break;
+            case Json::objectValue: cout << "object of length " << val.size() << "\n"; break;
+            default: cout << "wrong type\n"; break;
+        }
+        }
+        catch(exception& e) {
+            std::cout << e.what() << std::endl;
+        }
 
-        std::cout << "ServiceManager.cpp - JSON created, parsing values ..." << std::endl; 
-        int idp1 = std::stoi(fast.write(input["id_player_1"]));
-        int idp2 = std::stoi(fast.write(input["id_player_1"]));
+
+        std::cout << "ServiceManager.cpp - JSON created, parsing values, starting by player 1 ..." << std::endl; 
+        auto idp1 = input["id_player_1"].asInt();
+        std::cout << "ServiceManager.cpp - player 2 ..." << std::endl; 
+        int idp2 = input["id_player_2"].asInt();
+        std::cout << "ServiceManager.cpp - moves ..." << std::endl; 
         std::string m =  fast.write(input["moves"]);
 
         std::cout << "ServiceManager.cpp - JSON values parsed, calling controler..." << std::endl; 
