@@ -46,18 +46,19 @@ void ServiceManager::post_new_game(const Rest::Request& request, Http::ResponseW
     try {
         std::cout << "ServiceManager.cpp - Analysing request for creating new game" << std::endl; 
 
-        std::string r = request.body()
+        std::string r = request.body();
 
         Json::Value input;   
         Json::Reader reader;
-        bool parsingresult = reader.parse(strJson.c_str(), input);
-        if ( !parsingSuccessful ) {
+        bool parsingresult = reader.parse(r.c_str(), input);
+        if (!parsingresult) {
             std::cout  << "ServiceManager.cpp - Failed to parse json" << reader.getFormattedErrorMessages();
-            response.send(Http::Code::Bad_Request, out);
+            response.send(Http::Code::Bad_Request, std::string("Request badly formatted : ") + r);
             return;       
         }
 
-        Game ret = game_controler->create(input);
+        Json::FastWriter fast;
+        Game ret = game_controler->create(std::stoi(fast.write(input["id_player_1"])), std::stoi(fast.write(input["id_player_2"])), fast.write(input["moves"]));
         std::string out = ret.to_json_string();
 
         std::cout << "ServiceManager.cpp - Sending answer for creating new game" << std::endl; 
