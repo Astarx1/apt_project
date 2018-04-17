@@ -29,7 +29,7 @@ public:
 	bool setDateGame(int new_timestamp);
 
 	std::string getMoves();
-	bool setMoves(int new_moves);
+	bool setMoves(std::string new_moves);
 
 	std::string to_json_string();
 	Json::Value to_json();

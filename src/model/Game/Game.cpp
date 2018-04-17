@@ -10,38 +10,38 @@ bool Game::setId(int new_id) {
 	return true;
 }
 
-int getIdPlayer1() { return id_player_1; }
-bool setIdPlayer1(int new_id) {
+int Game::getIdPlayer1() { return id_player_1; }
+bool Game::setIdPlayer1(int new_id) {
 	id_player_1 = new_id;
 	return true;
 }
 
-int getIdPlayer2()  { return id_player_2; }
-bool setIdPlayer2(int new_id) {
+int Game::getIdPlayer2()  { return id_player_2; }
+bool Game::setIdPlayer2(int new_id) {
 	id_player_2 = new_id;
 	return true;
 }
 
-float getLevelPlayer1() { return level_player_1; };
-bool setLevelPlayer1(float new_level) {
+float Game::getLevelPlayer1() { return level_player_1; };
+bool Game::setLevelPlayer1(float new_level) {
 	level_player_1 = new_level;
 	return true;
 }
 
-float getLevelPlayer2() { return level_player_2; };
-bool setLevelPlayer2(float new_level) {
+float Game::getLevelPlayer2() { return level_player_2; };
+bool Game::setLevelPlayer2(float new_level) {
 	level_player_2 = new_level;
 	return true;
 }
 
-int getDateGame() { return date_game; };
-bool setgetDateGame(int new_timestamp) {
+int Game::getDateGame() { return date_game; };
+bool Game::setDateGame(int new_timestamp) {
 	date_game = new_timestamp;
 	return true;
 }
 
-std::string getMoves() { return moves; }
-bool setMoves(int new_moves) {
+std::string Game::getMoves() { return moves; }
+bool Game::setMoves(std::string new_moves) {
 	moves = new_moves;
 	return true;
 }
