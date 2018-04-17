@@ -52,7 +52,7 @@ void ServiceManager::post_new_game(const Rest::Request& request, Http::ResponseW
         Json::Reader reader;
         bool parsingresult = reader.parse(r.c_str(), input);
         if (!parsingresult) {
-            std::cout  << "ServiceManager.cpp - Failed to parse json" << reader.getFormattedErrorMessages();
+            std::cout  << "ServiceManager.cpp - Failed to parse json" << reader.getFormattedErrorMessages() << "\n" << std::endl;
             response.send(Http::Code::Bad_Request, std::string("Request badly formatted : ") + r);
             return;       
         }
