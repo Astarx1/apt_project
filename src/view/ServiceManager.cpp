@@ -44,7 +44,7 @@ void ServiceManager::setupRoutes() {
 
 void ServiceManager::post_new_game(const Rest::Request& request, Http::ResponseWriter response) {
     try {
-        std::cout << "ServiceManager.cpp - Analysing request for creating new game" << std::endl; 
+        std::cout << "ServiceManager.cpp - Analysing request for creating new game, creating adequate Json reader..." << std::endl; 
 
         std::string r = request.body();
 
@@ -58,7 +58,14 @@ void ServiceManager::post_new_game(const Rest::Request& request, Http::ResponseW
         }
 
         Json::FastWriter fast;
-        Game ret = game_controler->create(std::stoi(fast.write(input["id_player_1"])), std::stoi(fast.write(input["id_player_2"])), fast.write(input["moves"]));
+
+        std::cout << "ServiceManager.cpp - JSON created, parsing values ..." << std::endl; 
+        int idp1 = std::stoi(fast.write(input["id_player_1"]));
+        int idp2 = std::stoi(fast.write(input["id_player_1"]));
+        std::string m =  fast.write(input["moves"]);
+
+        std::cout << "ServiceManager.cpp - JSON values parsed, calling controler..." << std::endl; 
+        Game ret = game_controler->create(idp1, idp2, m);
         std::string out = ret.to_json_string();
 
         std::cout << "ServiceManager.cpp - Sending answer for creating new game" << std::endl; 
