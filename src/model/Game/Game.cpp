@@ -7,13 +7,55 @@ Game::~Game() {}
 int Game::getId() { return id_game; }
 bool Game::setId(int new_id) {
 	id_game = new_id;
-	return id_game;
+	return true;
+}
+
+int getIdPlayer1() { return id_player_1; }
+bool setIdPlayer1(int new_id) {
+	id_player_1 = new_id;
+	return true;
+}
+
+int getIdPlayer2()  { return id_player_2; }
+bool setIdPlayer2(int new_id) {
+	id_player_2 = new_id;
+	return true;
+}
+
+float getLevelPlayer1() { return level_player_1; };
+bool setLevelPlayer1(float new_level) {
+	level_player_1 = new_level;
+	return true;
+}
+
+float getLevelPlayer2() { return level_player_2; };
+bool setLevelPlayer2(float new_level) {
+	level_player_2 = new_level;
+	return true;
+}
+
+int getDateGame() { return date_game; };
+bool setgetDateGame(int new_timestamp) {
+	date_game = new_timestamp;
+	return true;
+}
+
+std::string getMoves() { return moves; }
+bool setMoves(int new_moves) {
+	moves = new_moves;
+	return true;
 }
 
 std::string Game::to_json_string() {
     Json::Value val;
     
     val["id_game"] = id_game;
+    val["id_player_1"] = id_player_1;
+    val["id_player_2"] = id_player_2;
+    val["level_player_1"] = level_player_1;
+    val["level_player_2"] = level_player_2;
+    val["date_game"] = date_game;
+    val["moves"] = moves;
 
     return val.toStyledString();
 }
@@ -22,6 +64,12 @@ Json::Value Game::to_json() {
 	Json::Value val;
 
     val["id_game"] = id_game;
+    val["id_player_1"] = id_player_1;
+    val["id_player_2"] = id_player_2;
+    val["level_player_1"] = level_player_1;
+    val["level_player_2"] = level_player_2;
+    val["date_game"] = date_game;
+    val["moves"] = moves;
 
     return val;
 }

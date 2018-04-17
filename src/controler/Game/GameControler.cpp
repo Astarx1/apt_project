@@ -3,3 +3,7 @@
 GameControler::GameControler(ConMySQL * msql) : msql(msql), db(GameDB(msql)) {
 	;
 }
+
+Game GameControler::create() {
+	;
+}

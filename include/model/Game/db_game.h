@@ -14,6 +14,7 @@ public:
 	GameDB(ConMySQL * msql);
 
 	Game read_game_from_id(int id);
+	Game create_game(int id_player_1, int id_player_2, std::string moves);
 
 private:
 	ConMySQL * sql_link;
