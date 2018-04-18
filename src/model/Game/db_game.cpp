@@ -37,7 +37,7 @@ Game GameDB::create_game(int id_player_1, int id_player_2, float level_player_1,
 
 	try {
 		std::cout << "db_player.h - Creating DB request to create new game" << std::endl;
-		std::string req = std::string("INSERT INTO PLAYERS (id_player_1, level_player_1, id_player_2, level_player_2, date_game, moves) ");
+		std::string req = std::string("INSERT INTO GAMES (id_player_1, level_player_1, id_player_2, level_player_2, date_game, moves) ");
 		req = req + std::string("VALUES (") + std::to_string(id_player_1) + std::string(",") + std::to_string(id_player_2) + std::string(",");
 		req = req + std::to_string(level_player_1) + std::string(",") + std::to_string(level_player_2) + std::string(",");
 		req = req + std::to_string(date_game) + std::string(",") + moves + std::string(");");
@@ -47,7 +47,7 @@ Game GameDB::create_game(int id_player_1, int id_player_2, float level_player_1,
 		sql_link->update(req);
 
 		std::cout << "db_player.h - Query done, returning infos about the game" << std::endl;
-		req = "SELECT * FROM PLAYERS ORDER BY id_player DESC LIMIT 1";
+		req = "SELECT * FROM GAMES ORDER BY id_game DESC LIMIT 1";
 		ExecuteResult r2 = sql_link->execute(req);
 		std::cout << "db_player.h - Query done, examining result" << std::endl;
 		if (r2.get_link_result() == NULL) {
