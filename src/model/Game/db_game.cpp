@@ -5,29 +5,30 @@ std::mutex GameDB::mx;
 GameDB::GameDB(ConMySQL * msql) : sql_link(msql) {}
 
 std::vector<Game> GameDB::read_games() {
-	std::cout << "db_player.cpp - Readind from game " << id << std::endl;		
+	std::cout << "db_player.cpp - Readind from games" << std::endl;		
 
-	Game ret(-1);
+	std::vector<Game> ret;
 	try {
-		std::string req = "SELECT * FROM GAMES WHERE id_game=";
-		req = req + std::to_string(id);
+		std::string req = "SELECT * FROM GAMES";
 		ExecuteResult r = sql_link->execute(req);
 
 		while(r.get_link_result()->next()) {
-			ret.setId(r.get_link_result()->getInt("id_game"));
-			ret.setIdPlayer1(r.get_link_result()->getInt("id_player_1"));
-			ret.setIdPlayer2(r.get_link_result()->getInt("id_player_2"));
-			ret.setLevelPlayer1(r.get_link_result()->getDouble("level_player_1"));
-			ret.setLevelPlayer2(r.get_link_result()->getDouble("level_player_2"));
-			ret.setDateGame(r.get_link_result()->getInt("date_game"));
-			ret.setMoves(r.get_link_result()->getString("moves"));
+			Game g;
+			g.setId(r.get_link_result()->getInt("id_game"));
+			g.setIdPlayer1(r.get_link_result()->getInt("id_player_1"));
+			g.setIdPlayer2(r.get_link_result()->getInt("id_player_2"));
+			g.setLevelPlayer1(r.get_link_result()->getDouble("level_player_1"));
+			g.setLevelPlayer2(r.get_link_result()->getDouble("level_player_2"));
+			g.setDateGame(r.get_link_result()->getInt("date_game"));
+			g.setMoves(r.get_link_result()->getString("moves"));
+			ret.push_back(g);
 		}
 	}
 	catch(...) {
-		std::cout << "db_player.cpp - Unable to read game " << id << std::endl;		
+		std::cout << "db_player.cpp - Unable to read games" << std::endl;		
 	}
 	
-	std::cout << "db_player.cpp - Reading from game " << id << " ended, returning the result" << std::endl;	
+	std::cout << "db_player.cpp - Reading from games ended, returning the result" << std::endl;	
 	return ret;
 }
 

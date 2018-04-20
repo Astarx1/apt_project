@@ -10,6 +10,16 @@ GameControler::GameControler(ConMySQL * msql) : msql(msql) {
 	;
 }
 
+
+std::vector<Game> PlayerControler::get() {
+	std::cout << "GameControler.cpp - Controling get all players" << std::endl;
+    GameDB game_db(msql);
+	std::vector<Game> t = game_db.read_games();
+	std::cout << "GameControler.cpp - Controling read for all players ended, returning the result" << std::endl;
+
+	return t;
+}
+
 Game GameControler::create(int id_player_1, int id_player_2, std::string moves) {
     std::cout << "GameControler.cpp - Getting informations about time..." << std::endl; 
 	int t = std::time(nullptr);
