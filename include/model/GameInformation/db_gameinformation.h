@@ -20,6 +20,7 @@ public:
 
 private:
 	ConMySQL * sql_link;
+	std::mutex mx;
 };
 
 #endif
