@@ -5,9 +5,10 @@
 class GameControler {
 public:
 	GameControler(ConMySQL * msql);
+	std::vector<Game> get();
 	Game create(int id_player_1, int id_player_2, std::string moves);
 	Game create(int id_player_1, int id_player_2, std::string moves, int winner);
-	std::vector<Game> get();
+	Game delete_from_id(int id);
 	
 private:
 	double compute_proba_victory(float elo_1, float elo_2);

@@ -69,6 +69,18 @@ Game GameControler::create(int id_player_1, int id_player_2, std::string moves, 
     return d;
 }
 
+Game GameControler::delete_from_id(int id) {
+	std::cout << "GameControler.cpp - deleting the game " << id << std::endl; 
+    GameDB game_db(msql);
+	Game d = game_db.delete_game_from_game_id(id);
+	std::cout << "GameControler.cpp - Game deletion ended, return values" << std::endl; 
+    return d;
+}
+
+
+
+
+
 double GameControler::compute_proba_victory(float elo_1, float elo_2) {
 	return 1 / (1+pow(10, 0 - (elo_1 + elo_2) / ELO_CONSTANTE));
 }

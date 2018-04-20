@@ -42,9 +42,9 @@ private:
     void get_player_from_id(const Rest::Request& request, Http::ResponseWriter response);
     void delete_player_from_id(const Rest::Request& request, Http::ResponseWriter response);
 
-
-    void get_all_games(const Rest::Request& request, Http::ResponseWriter response);
     void post_new_game(const Rest::Request& request, Http::ResponseWriter response);
+    void get_all_games(const Rest::Request& request, Http::ResponseWriter response);
+    void delete_game_from_id(const Rest::Request& request, Http::ResponseWriter response);
     
     PlayerControler * player_controler;
     GameControler * game_controler;

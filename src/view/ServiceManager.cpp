@@ -111,6 +111,24 @@ void ServiceManager::get_all_games(const Rest::Request& request, Http::ResponseW
     }
 }
 
+void ServiceManager::delete_game_from_id(const Rest::Request& request, Http::ResponseWriter response) {
+    try {
+        std::cout << "ServiceManager.cpp - Analysing request for getting player from id" << std::endl; 
+
+        auto id = request.param(":id").as<int>();
+        
+        Game ret = game_controler->delete_from_id(id);
+        
+        std::cout << "ServiceManager.cpp - Sending answer for deleting player from id" << std::endl; 
+        response.send(Http::Code::Ok, ret.to_json_string());  
+        
+        std::cout << "ServiceManager.cpp - Answer sent for deleting player from id\n" << std::endl; 
+    }
+    catch(...) {
+        std::cout << "ServiceManager.cpp - exception occured in the view in get_player_from_id" << std::endl;
+    }
+}
+
 void ServiceManager::post_new_player(const Rest::Request& request, Http::ResponseWriter response) {
     try {
         std::cout << "ServiceManager.cpp - Analysing request for creating new player" << std::endl; 
