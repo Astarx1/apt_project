@@ -40,6 +40,8 @@ void ServiceManager::setupRoutes() {
     Routes::Get(router, "/players", Routes::bind(&ServiceManager::get_all_players, this));
 
     Routes::Post(router, "/game", Routes::bind(&ServiceManager::post_new_game, this));
+
+    Routes::Get(router, "/games", Routes::bind(&ServiceManager::get_all_games, this));
 }
 
 void ServiceManager::post_new_game(const Rest::Request& request, Http::ResponseWriter response) {

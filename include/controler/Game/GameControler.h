@@ -9,5 +9,7 @@ public:
 	std::vector<Game> get();
 	
 private:
+	double compute_proba_victory(int elo_1, int elo_2);
+	void update_players(Player1 p1, Player2 p2, PlayerDB * pdb);
 	ConMySQL * msql; 
 };

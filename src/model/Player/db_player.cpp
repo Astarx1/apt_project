@@ -79,6 +79,40 @@ Player PlayerDB::read_player_from_id(int id) {
 	return ret;
 }
 
+
+Player PlayerDB::update_player(Player p){
+	std::cout << "db_player.cpp - Updating player " << p.getId() << std::endl;		
+
+	Player ret;
+	try {
+		std::cout << "db_player.cpp - Checking the player exists ..." << std::endl;
+		std::string req = "SELECT * FROM PLAYERS WHERE id_player=";
+		req = req + std::to_string(p.getId());
+		ExecuteResult r = sql_link->execute(req);
+
+		while(r.get_link_result()->next()) {
+			ret.setId(r.get_link_result()->getInt("id_player"));
+			ret.setLevel(r.get_link_result()->getDouble("current_level"));
+			ret.setTrivia(r.get_link_result()->getString("trivia_player"));
+		}
+
+		if (ret.getId() >= 0) {
+			std::cout << "db_player.cpp - Updating the player..." << std::endl;
+			std::string req = "UPDATE PLAYERS SET current_level=";
+			req += std::to_string(p.getLevel()) + std::string(", trivia_player='") + p.getTrivia(); 
+			req += str::string("' WHERE id_player=") + std::to_string(p.getId()) + std::string(";");
+			sql_link->update(req);
+			ret = p;
+		}
+	}
+	catch(...) {
+		std::cout << "db_player.cpp - Unable to update player" << id << std::endl;		
+	}
+	
+	std::cout << "db_player.cpp - Readind from player " << p.getId() << " ended, returning the result" << std::endl;		
+	return ret;
+}
+
 Player PlayerDB::delete_player_from_id(int id) {
 	std::cout << "db_player.cpp - Deleting player " << id << std::endl;		
 	Player ret(-1);

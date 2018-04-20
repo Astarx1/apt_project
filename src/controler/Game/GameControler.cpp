@@ -5,13 +5,17 @@
 #include "model/Player/db_player.h"
 
 #include <ctime>
+#include <math.h>
+
+#define CHANGE_CONSTANTE 40.0
+#define ELO_CONSTANTE 400.0
 
 GameControler::GameControler(ConMySQL * msql) : msql(msql) {
 	;
 }
 
 
-std::vector<Game> PlayerControler::get() {
+std::vector<Game> GameControler::get() {
 	std::cout << "GameControler.cpp - Controling get all players" << std::endl;
     GameDB game_db(msql);
 	std::vector<Game> t = game_db.read_games();
@@ -54,11 +58,30 @@ Game GameControler::create(int id_player_1, int id_player_2, std::string moves, 
 	Game d = game_db.create_game(id_player_1, id_player_2, p1.getLevel(), p2.getLevel(), t, moves); 
     
     if (d.getId() != -1) {
-	    std::cout << "Adding information about the winner ..." << std::endl;
+	    std::cout << "GameControler.cpp - Adding information about the winner ..." << std::endl;
 		GameInfoDB game_info_db(msql);
 		GameInformation gi = game_info_db.create_game_info(d.getId(), 0, std::to_string(winner)); 
+	    std::cout << "GameControler.cpp - Updating players ..." << std::endl;
+	    update_players(p1, p2, winner);
     }
 
     std::cout << "GameControler.cpp - Game creation ended, return values" << std::endl; 
     return d;
+}
+
+double GameControler::compute_proba_victory(float elo_1, float elo_2) {
+	return 1 / (1+pow(10, 0 - (elo_1 + elo_2) / ELO_CONSTANTE));
+}
+
+void GameControler::update_players(Player1 p1, Player2 p2, PlayerDB * pdb) {
+	if (winner == 1) {
+		level_player_1 += CHANGE_CONSTANTE * (1 - compute_proba_victory(p1.getLevel(), p2.getLevel()));
+		level_player_2 += CHANGE_CONSTANTE * (0 - compute_proba_victory(p2.getLevel(), p2.getLevel())); 
+	}
+	else {
+		level_player_1 += CHANGE_CONSTANTE * (0 - compute_proba_victory(p1.getLevel(), p2.getLevel()));
+		level_player_2 += CHANGE_CONSTANTE * (1 - compute_proba_victory(p2.getLevel(), p1.getLevel())); 
+	}
+	pdb->update_player(p1);
+	pdb->update_player(p2);
 }
