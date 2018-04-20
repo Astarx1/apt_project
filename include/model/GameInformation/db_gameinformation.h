@@ -1,5 +1,5 @@
-#ifndef DB_GAME_H
-#define DB_GAME_H
+#ifndef DB_GAME_INFO_H
+#define DB_GAME_INFO_H
 
 #include <mutex>
 

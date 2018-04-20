@@ -1,7 +1,7 @@
 #include "controler/Game/GameControler.h"
 
 #include "model/Game/db_game.h"
-#include "model/GameInformation/db_game_information.h"
+#include "model/GameInformation/db_gameinformation.h"
 #include "model/Player/db_player.h"
 
 #include <ctime>
