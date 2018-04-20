@@ -7,8 +7,8 @@
 #include <ctime>
 #include <math.h>
 
-#define CHANGE_CONSTANTE 40.0
-#define ELO_CONSTANTE 400.0
+#define CHANGE_CONSTANTE 5.0
+#define ELO_CONSTANTE 800.0
 
 GameControler::GameControler(ConMySQL * msql) : msql(msql) {
 	;
@@ -72,6 +72,8 @@ Game GameControler::create(int id_player_1, int id_player_2, std::string moves, 
 Game GameControler::delete_from_id(int id) {
 	std::cout << "GameControler.cpp - deleting the game " << id << std::endl; 
     GameDB game_db(msql);
+    GameInfoDB game_info_db(msql);
+    game_info_db.delete_game_infos_from_game_id(id);
 	Game d = game_db.delete_game_from_game_id(id);
 	std::cout << "GameControler.cpp - Game deletion ended, return values" << std::endl; 
     return d;
@@ -82,20 +84,27 @@ Game GameControler::delete_from_id(int id) {
 
 
 double GameControler::compute_proba_victory(float elo_1, float elo_2) {
-	return 1 / (1+pow(10, 0 - (elo_1 + elo_2) / ELO_CONSTANTE));
+	double p = 1 / (1+pow(10, 0 - (elo_1 - elo_2) / ELO_CONSTANTE));
+	std::cout << "GameControler.cpp - Proba victory computed : " << p << std::endl; 
+	return p;
 }
 
 void GameControler::update_players(Player p1, Player p2, int winner) {
 	PlayerDB pdb(msql);
 
-	if (winner == 1) {
-		p1.setLevel(CHANGE_CONSTANTE * (1 - compute_proba_victory(p1.getLevel(), p2.getLevel())));
-		p2.setLevel(CHANGE_CONSTANTE * (0 - compute_proba_victory(p2.getLevel(), p1.getLevel()))); 
+	double lp1 = p1.getLevel();
+	double lp2 = p2.getLevel();
+
+	std::cout << "Update player infos : " << p1.getLevel() << " vs " << p2.getLevel() << std::endl;
+	if (winner == 1) { 
+		p1.setLevel(lp1 + CHANGE_CONSTANTE * (1 - compute_proba_victory(lp1, lp2)));
+		p2.setLevel(lp2 + CHANGE_CONSTANTE * (0 - compute_proba_victory(lp2, lp1))); 
 	}
 	else {
-		p1.setLevel(CHANGE_CONSTANTE * (0 - compute_proba_victory(p1.getLevel(), p2.getLevel())));
-		p2.setLevel(CHANGE_CONSTANTE * (1 - compute_proba_victory(p2.getLevel(), p1.getLevel()))); 
+		p1.setLevel(p1.getLevel() + CHANGE_CONSTANTE * (0 - compute_proba_victory(lp1, lp2)));
+		p2.setLevel(p2.getLevel() + CHANGE_CONSTANTE * (1 - compute_proba_victory(lp2, lp1))); 
 	}
+	std::cout << "Update player infos : " << p1.getLevel() << " vs " << p2.getLevel() << std::endl;
 
 	pdb.update_player(p1);
 	pdb.update_player(p2);

@@ -39,7 +39,10 @@ void ServiceManager::setupRoutes() {
     
     Routes::Get(router, "/players", Routes::bind(&ServiceManager::get_all_players, this));
 
+
+
     Routes::Post(router, "/game", Routes::bind(&ServiceManager::post_new_game, this));
+    Routes::Delete(router, "/game/:id", Routes::bind(&ServiceManager::delete_game_from_id, this));
 
     Routes::Get(router, "/games", Routes::bind(&ServiceManager::get_all_games, this));
 }
