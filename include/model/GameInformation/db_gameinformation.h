@@ -9,10 +9,14 @@
 #include "model/Game/Game.h"
 #include "model/GameInformation/GameInformation.h"
 
+/* 
+Info types :
+- 0 : Winner 
+*/
 class GameInfoDB {
 public:
 	static std::mutex mx;
-	
+
 	GameInfoDB(ConMySQL * msql);
 	~GameInfoDB();
 
