@@ -73,3 +73,20 @@ Game GameDB::create_game(int id_player_1, int id_player_2, float level_player_1,
 	return ret;
 }
 
+Game GameDB::delete_game_from_game_id(int id_game) {
+	std::cout << "db_player.cpp - Deleting game " << id << std::endl;		
+	Game ret(-1);
+
+	try {
+		std::string req = "DELETE FROM GAMES WHERE id_game=";
+		req = req + std::to_string(id);
+		sql_link->update(req);
+		ret.setId(id_game)	
+	}
+	catch(...) {
+		std::cout << "db_player.cpp - Unable to delete game" << id << std::endl;		
+	}
+
+	std::cout << "db_player.cpp - Deleting game " << id << " ended, returning the result" << std::endl;		
+	return ret;	
+}

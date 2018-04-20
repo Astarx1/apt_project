@@ -7,14 +7,16 @@
 #include "model/MySQLLink.h"
 #include "model/ExecuteResult.h"
 #include "model/Game/Game.h"
+#include "model/GameInformation/GameInformation.h"
 
-class GameDB {
+class GameInfoDB {
 public:
 	static std::mutex mx;
 	GameDB(ConMySQL * msql);
 
-	Game read_game_from_id(int id);
-	Game create_game(int id_player_1, int id_player_2, float level_player_1, float level_player_2, int date_game, std::string moves) ; 
+	std::vector<GameInformation> read_gameinfos_from_game_id(int id);
+	GameInformation create_game_info(int id_game, int type, std::string value);
+	GameInformation delete_game_infos_from_game_id(int id_game); 
 
 private:
 	ConMySQL * sql_link;
