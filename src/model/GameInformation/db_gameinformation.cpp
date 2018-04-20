@@ -1,6 +1,9 @@
 #include "model/GameInformation/db_gameinformation.h"
 
-std::mutex GameInformation::mx;
+std::mutex GameInfoDB::mx;
+
+GameInfoDB::GameInfoDB(ConMySQL * msql) : sql_link(msql) {}
+GameInfoDB::~GameInfoDB() {}
 
 std::vector<GameInformation> GameInfoDB::read_gameinfos_from_game_id(int id) { 
 	std::cout << "db_gameinformation.cpp - Readind infos from game " << id << std::endl;		
@@ -32,7 +35,7 @@ GameInformation GameInfoDB::create_game_info(int id_game, int type, std::string 
 	GameInfoDB::mx.lock();
 
 	try {
-		std::cout << "db_gameinformation.h - Creating DB request to create new game" << std::endl;
+		std::cout << "db_gameinformation.h - Creating DB request to create new game infos for game " << id_game << std::endl;
 		std::string req = std::string("INSERT INTO GAMESINFOS (id_game, type, value_info) ");
 		req = req + std::string("VALUES (") + std::to_string(id_game) + std::string(",") + std::to_string(type) + std::string(",");
 		req = req + value + std::string(");");
@@ -66,19 +69,19 @@ GameInformation GameInfoDB::create_game_info(int id_game, int type, std::string 
 }
 
 GameInformation GameInfoDB::delete_game_infos_from_game_id(int id_game) {
-	std::cout << "db_player.cpp - Deleting game infos for game " << id << std::endl;		
+	std::cout << "db_player.cpp - Deleting game infos for game " << id_game << std::endl;		
 	GameInformation ret(-1);
 
 	try {
 		std::string req = "DELETE FROM GAMESINFOS WHERE id_game=";
-		req = req + std::to_string(id);
+		req = req + std::to_string(id_game);
 		sql_link->update(req);
-		ret.setIdGame(id_game)	
+		ret.setIdGame(id_game);	
 	}
 	catch(...) {
-		std::cout << "db_player.cpp - Unable to delete game infos for game " << id << std::endl;		
+		std::cout << "db_player.cpp - Unable to delete game infos for game " << id_game << std::endl;		
 	}
 
-	std::cout << "db_player.cpp - Deleting game infos for game " << id << " ended, returning the result" << std::endl;		
+	std::cout << "db_player.cpp - Deleting game infos for game " << id_game << " ended, returning the result" << std::endl;		
 	return ret;	
 }

@@ -11,6 +11,7 @@
 class GameDB {
 public:
 	static std::mutex mx;
+	
 	GameDB(ConMySQL * msql);
 
 	Game read_game_from_id(int id);

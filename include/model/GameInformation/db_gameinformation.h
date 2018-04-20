@@ -12,7 +12,9 @@
 class GameInfoDB {
 public:
 	static std::mutex mx;
-	GameDB(ConMySQL * msql);
+	
+	GameInfoDB(ConMySQL * msql);
+	~GameInfoDB();
 
 	std::vector<GameInformation> read_gameinfos_from_game_id(int id);
 	GameInformation create_game_info(int id_game, int type, std::string value);
@@ -20,7 +22,6 @@ public:
 
 private:
 	ConMySQL * sql_link;
-	std::mutex mx;
 };
 
 #endif

@@ -7,6 +7,7 @@
 class GameInformation {
 public:
 	GameInformation();
+	GameInformation(int id);
 	~GameInformation();
 
 	int getId();
@@ -16,9 +17,9 @@ public:
 	bool setIdGame(int new_id);
 
 	int getType();
-	bool setType(in new_type);
+	bool setType(int new_type);
 
-	int getValue();
+	std::string getValue();
 	bool setValue(std::string new_value);
 
 	std::string to_json_string();

@@ -1,8 +1,9 @@
 #include "model/GameInformation/GameInformation.h"
 
 
-GameInformation::GameInformation();
-GameInformation::~GameInformation();
+GameInformation::GameInformation(int id) : id_game_information(id) {}
+GameInformation::GameInformation() : id_game_information(-1) {}
+GameInformation::~GameInformation() {}
 
 int GameInformation::getId() {
     return id_game_information;
@@ -23,12 +24,12 @@ bool GameInformation::setIdGame(int new_id) {
 int GameInformation::getType() {
     return type;
 }
-bool GameInformation::setType(in new_type) {
+bool GameInformation::setType(int new_type) {
     type = new_type;
     return true;
 }
 
-int GameInformation::getValue() {
+std::string GameInformation::getValue() {
     return value;
 }
 bool GameInformation::setValue(std::string new_value) {
@@ -46,7 +47,7 @@ std::string GameInformation::to_json_string() {
     return val.toStyledString();
 }
 
-Json::Value Player::to_json() {
+Json::Value GameInformation::to_json() {
 	Json::Value val;
 
     val["id_game_information"] = id_game_information;
