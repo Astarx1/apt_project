@@ -71,8 +71,12 @@ void ServiceManager::post_new_game(const Rest::Request& request, Http::ResponseW
         int idp2 = input["id_player_2"].asInt();
         std::string m =  fast.write(input["moves"]);
 
+        Game ret;
         std::cout << "ServiceManager.cpp - JSON values parsed, calling controler..." << std::endl; 
-        Game ret = game_controler->create(idp1, idp2, m);
+        if (input.isMember("winner"))
+            ret = game_controler->create(idp1, idp2, m, input["winner"].asInt());
+        else
+            ret = game_controler->create(idp1, idp2, m);
         std::string out = ret.to_json_string();
 
         std::cout << "ServiceManager.cpp - Sending answer for creating new game" << std::endl; 
