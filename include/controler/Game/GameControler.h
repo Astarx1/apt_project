@@ -1,5 +1,6 @@
 #include "model/MySQLLink.h"
 #include "model/Game/Game.h"
+#include "model/Player/Player.h"
 
 class GameControler {
 public:
@@ -9,7 +10,7 @@ public:
 	std::vector<Game> get();
 	
 private:
-	double compute_proba_victory(int elo_1, int elo_2);
-	void update_players(Player1 p1, Player2 p2, PlayerDB * pdb);
+	double compute_proba_victory(float elo_1, float elo_2);
+	void update_players(Player p1, Player p2, int winner);
 	ConMySQL * msql; 
 };

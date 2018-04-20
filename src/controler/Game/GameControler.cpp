@@ -73,15 +73,18 @@ double GameControler::compute_proba_victory(float elo_1, float elo_2) {
 	return 1 / (1+pow(10, 0 - (elo_1 + elo_2) / ELO_CONSTANTE));
 }
 
-void GameControler::update_players(Player1 p1, Player2 p2, PlayerDB * pdb) {
+void GameControler::update_players(Player p1, Player p2, int winner) {
+	PlayerDB pdb(msql);
+
 	if (winner == 1) {
-		level_player_1 += CHANGE_CONSTANTE * (1 - compute_proba_victory(p1.getLevel(), p2.getLevel()));
-		level_player_2 += CHANGE_CONSTANTE * (0 - compute_proba_victory(p2.getLevel(), p2.getLevel())); 
+		p1.setLevel(CHANGE_CONSTANTE * (1 - compute_proba_victory(p1.getLevel(), p2.getLevel())));
+		p2.setLevel(CHANGE_CONSTANTE * (0 - compute_proba_victory(p2.getLevel(), p1.getLevel()))); 
 	}
 	else {
-		level_player_1 += CHANGE_CONSTANTE * (0 - compute_proba_victory(p1.getLevel(), p2.getLevel()));
-		level_player_2 += CHANGE_CONSTANTE * (1 - compute_proba_victory(p2.getLevel(), p1.getLevel())); 
+		p1.setLevel(CHANGE_CONSTANTE * (0 - compute_proba_victory(p1.getLevel(), p2.getLevel())));
+		p2.setLevel(CHANGE_CONSTANTE * (1 - compute_proba_victory(p2.getLevel(), p1.getLevel()))); 
 	}
-	pdb->update_player(p1);
-	pdb->update_player(p2);
+
+	pdb.update_player(p1);
+	pdb.update_player(p2);
 }
