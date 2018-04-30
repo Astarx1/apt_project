@@ -34,9 +34,10 @@ void ServiceManager::setupRoutes() {
 
     Routes::Get(router, "/player/:id", Routes::bind(&ServiceManager::get_player_from_id, this));
     Routes::Delete(router, "/player/:id", Routes::bind(&ServiceManager::delete_player_from_id, this));
+    Routes::Post(router, "/player/:id", Routes::bind(&ServiceManager::post_info_player, this));
 
     Routes::Post(router, "/player", Routes::bind(&ServiceManager::post_new_player, this));
-    
+
     Routes::Get(router, "/players", Routes::bind(&ServiceManager::get_all_players, this));
 
 
@@ -166,6 +167,48 @@ void ServiceManager::get_all_players(const Rest::Request& request, Http::Respons
     }
     catch(...) {
         std::cout << "ServiceManager.cpp - exception occured in the view in get_all_players" << std::endl;
+    }
+}
+
+void ServiceManager::post_info_player(const Rest::Request& request, Http::ResponseWriter response) {
+    try {
+        std::cout << "ServiceManager.cpp - Analysing request for posting a new player info, getting body..." << std::endl; 
+
+        std::string r = request.body();
+
+        std::cout << "ServiceManager.cpp - body got, creating adequate Json reader...\n" << r << std::endl;
+
+        Json::Value input;   
+        Json::Reader reader;
+        bool parsingresult = reader.parse(r, input);
+        if (!parsingresult) {
+            std::cout  << "ServiceManager.cpp - Failed to parse json" << reader.getFormattedErrorMessages() << "\n" << std::endl;
+            response.send(Http::Code::Bad_Request, std::string("Request badly formatted : ") + r);
+            return;       
+        }
+        parsingresult = reader.parse(input.asString(), input);
+        if (!parsingresult) {
+            std::cout  << "ServiceManager.cpp - Failed to parse json" << reader.getFormattedErrorMessages() << "\n" << std::endl;
+            response.send(Http::Code::Bad_Request, std::string("Request badly formatted : ") + r);
+            return;       
+        }
+        std::cout << "ServiceManager.cpp - Error (?) when processing the JSON : " << reader.getFormattedErrorMessages() << std::endl; 
+
+        Json::FastWriter fast;
+        auto idp = input["id_player"].asInt();
+
+        Player ret;
+        std::cout << "ServiceManager.cpp - JSON values parsed, calling controler..." << std::endl; 
+        if (input.isMember("name"))
+            ret = player_controler->update_name(idp, input["name"].asString());
+        std::string out = ret.to_json_string();
+
+        std::cout << "ServiceManager.cpp - Sending answer for player infos" << std::endl; 
+        response.send(Http::Code::Ok, out);       
+        std::cout << "ServiceManager.cpp - Answer sent for changing player infos\n" << std::endl;
+    }
+    catch(...) {
+        std::cout << "ServiceManager.cpp - exception occured in the view in post_info_player" << std::endl;
     }
 }
 

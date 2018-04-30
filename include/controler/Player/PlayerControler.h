@@ -9,6 +9,8 @@ public:
 	Player delete_from_id(int id);
 	std::vector<Player> get();
 
+	Player update_name(int id, std::string name);
+
 private:
 	PlayerDB db;	
 	ConMySQL * msql;

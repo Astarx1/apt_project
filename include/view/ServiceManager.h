@@ -23,7 +23,6 @@
 using namespace std;
 using namespace Pistache;
 
-
 class ServiceManager {
 public:
     ServiceManager(Address addr, ConMySQL * msql);
@@ -41,6 +40,8 @@ private:
     void get_all_players(const Rest::Request& request, Http::ResponseWriter response);
     void get_player_from_id(const Rest::Request& request, Http::ResponseWriter response);
     void delete_player_from_id(const Rest::Request& request, Http::ResponseWriter response);
+
+    void post_info_player(const Rest::Request& request, Http::ResponseWriter response);
 
     void post_new_game(const Rest::Request& request, Http::ResponseWriter response);
     void get_all_games(const Rest::Request& request, Http::ResponseWriter response);

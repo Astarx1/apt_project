@@ -7,8 +7,8 @@
 #include <ctime>
 #include <math.h>
 
-#define CHANGE_CONSTANTE 5.0
-#define ELO_CONSTANTE 800.0
+#define CHANGE_CONSTANTE 10.0
+#define ELO_CONSTANTE 400.0
 
 GameControler::GameControler(ConMySQL * msql) : msql(msql) {
 	;

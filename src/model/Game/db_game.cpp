@@ -66,8 +66,8 @@ Game GameDB::create_game(int id_player_1, int id_player_2, float level_player_1,
 	try {
 		std::cout << "db_player.h - Creating DB request to create new game" << std::endl;
 		std::string req = std::string("INSERT INTO GAMES (id_player_1, level_player_1, id_player_2, level_player_2, date_game, moves) ");
-		req = req + std::string("VALUES (") + std::to_string(id_player_1) + std::string(",") + std::to_string(id_player_2) + std::string(",");
-		req = req + std::to_string(level_player_1) + std::string(",") + std::to_string(level_player_2) + std::string(",");
+		req = req + std::string("VALUES (") + std::to_string(id_player_1) + std::string(",") + std::to_string(level_player_1) + std::string(",");
+		req = req + std::to_string(id_player_2) + std::string(",") + std::to_string(level_player_2) + std::string(",");
 		req = req + std::to_string(date_game) + std::string(",") + moves + std::string(");");
 
 		std::cout << "db_player.h - Creating DB request to create new game : " << req << std::endl;
