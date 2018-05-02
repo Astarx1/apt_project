@@ -79,10 +79,6 @@ Game GameControler::delete_from_id(int id) {
     return d;
 }
 
-
-
-
-
 double GameControler::compute_proba_victory(float elo_1, float elo_2) {
 	double p = 1 / (1+pow(10, 0 - (elo_1 - elo_2) / ELO_CONSTANTE));
 	std::cout << "GameControler.cpp - Proba victory computed : " << p << std::endl; 
