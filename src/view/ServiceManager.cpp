@@ -13,15 +13,20 @@ ServiceManager::~ServiceManager(){
 }
 
 void ServiceManager::init(size_t thr) {
+    std::cout << "Initializing" << std::endl;
     auto opts = Http::Endpoint::options()
         .threads(thr)
         .flags(Tcp::Options::InstallSignalHandler | Tcp::Options::ReuseAddr);
     httpEndpoint->init(opts);
+    std::cout << "Setup route" << std::endl;
     setupRoutes();
+    std::cout << "Initialized" << std::endl;
 }
 
 void ServiceManager::start() {
+    std::cout << "Setting Handler" << std::endl;
     httpEndpoint->setHandler(router.handler());
+    std::cout << "Starting Thread" << std::endl;
     httpEndpoint->serveThreaded();
 }
 

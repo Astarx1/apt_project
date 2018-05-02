@@ -6,6 +6,14 @@ ConMySQL::ConMySQL () {
 	try {
         driver = get_driver_instance();
         con = driver->connect("tcp://127.0.0.1:3306", MYSQL_USER, MYSQL_PWD);
+
+	    /*sql::Statement* stmt = con->createStatement();
+	    std::string query = "CREATE DATABASE IF NOT EXISTS goranking";
+		std::cout << "MySQLLink.cpp - Executing request : " << query << std::endl;
+		stmt->executeUpdate(query);
+		std::cout << "MySQLLink.cpp - Request linked, deleting statemement" << std::endl;
+	  	delete stmt;*/
+
         con->setSchema("goranking");
         if(con->isValid()) {
 	        initialized = true;
@@ -13,6 +21,34 @@ ConMySQL::ConMySQL () {
         }
 	    else
 	    	throw std::exception();
+
+	    /*stmt = con->createStatement();
+	    query = "CREATE TABLE IF NOT EXISTS GAMES(id_game INT PRIMARY KEY NOT NULL AUTO_INCREMENT, id_player_1 INT NOT NULL, level_player_1 FLOAT NOT NULL, id_player_2 INT NOT NULL, level_player_2 FLOAT NOT NULL, date_game INT NOT NULL, moves TEXT)";
+		std::cout << "MySQLLink.cpp - Executing request : " << query << std::endl;
+		stmt->executeUpdate(query);
+		std::cout << "MySQLLink.cpp - Request linked, deleting statemement" << std::endl;
+	  	delete stmt;
+
+	    stmt = con->createStatement();
+	    query = "CREATE TABLE IF NOT EXISTS GAMESINFOS(id_info INT PRIMARY KEY NOT NULL AUTO_INCREMENT, id_game INT NOT NULL, type_info INT NOT NULL, value_info TEXT)";
+		std::cout << "MySQLLink.cpp - Executing request : " << query << std::endl;
+		stmt->executeUpdate(query);
+		std::cout << "MySQLLink.cpp - Request linked, deleting statemement" << std::endl;
+	  	delete stmt;
+
+	    stmt = con->createStatement();
+	    query = "CREATE TABLE IF NOT EXISTS PLAYERS(id_player INT PRIMARY KEY NOT NULL AUTO_INCREMENT, current_level FLOAT NOT NULL, trivia_player TEXT)";
+		std::cout << "MySQLLink.cpp - Executing request : " << query << std::endl;
+		stmt->executeUpdate(query);
+		std::cout << "MySQLLink.cpp - Request linked, deleting statemement" << std::endl;
+	  	delete stmt;
+
+	    stmt = con->createStatement();
+	    query = "CREATE TABLE IF NOT EXISTS PLAYERSINFOS(id_info INT PRIMARY KEY NOT NULL AUTO_INCREMENT, id_player INT NOT NULL, type_info INT NOT NULL, value_info TEXT);";
+		std::cout << "MySQLLink.cpp - Executing request : " << query << std::endl;
+		stmt->executeUpdate(query);
+		std::cout << "MySQLLink.cpp - Request linked, deleting statemement" << std::endl;
+	  	delete stmt;*/
 
 	    std::cout << "MySQL connection : " << initialized << std::endl;
 	}

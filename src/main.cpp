@@ -14,6 +14,7 @@ using namespace Pistache;
 int main(int argc, char *argv[]) {
     Port port(9080);
     ConMySQL * msql = new ConMySQL(); 
+    
     int thr = 2;
 
     if (argc >= 2) {
