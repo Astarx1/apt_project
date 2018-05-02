@@ -4,6 +4,8 @@
 #include "model/GameInformation/db_gameinformation.h"
 #include "model/Player/db_player.h"
 
+#include "controler/WHR/proba_win.h"
+
 #include <ctime>
 #include <math.h>
 
@@ -65,7 +67,17 @@ Game GameControler::create(int id_player_1, int id_player_2, std::string moves, 
 	    update_players(p1, p2, winner);
     }
 
+    std::cout << "Lets see what the Bayesian predictor is giving us ..." << std::endl;
+    try {
+    	ProbaWin championship(msql);
+    	championship.running_algorithm(1);
+    }
+    catch(...) {
+    	std::cout << "Bayes failed me once again" << std::endl;
+    }
+
     std::cout << "GameControler.cpp - Game creation ended, return values" << std::endl; 
+
     return d;
 }
 

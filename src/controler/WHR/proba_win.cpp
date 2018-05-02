@@ -1,13 +1,14 @@
 #include "controler/WHR/proba_win.h"
 #include <cmath>
 
-void ProbaWin::running_algorithm() {
-	running = true;	
-	while(running) {
+void ProbaWin::running_algorithm(int round) {
+	running = true;	 
+	while(running && round != 0) {
 		update_pool_players();
 		for (auto p: ps) {
 			naive_max_log_implementation(p);
 		}
+		round--;
 	}	 
 }
 
@@ -47,6 +48,7 @@ void ProbaWin::update_pool_players() {
 			}
 		}
 	}
+	//std::cout << "Proba_win.cpp - Players in the pool : " << std::endl;
 }
 
 void ProbaWin::naive_max_log_implementation(PlayerLinkedToGame & p) {

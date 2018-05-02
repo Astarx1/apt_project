@@ -48,7 +48,7 @@ public:
 	~ProbaWin() {}
 
 	void update_pool_players();
-	void running_algorithm();
+	void running_algorithm(int round=-1);
 
 private:
 	ConMySQL * msql;

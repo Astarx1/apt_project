@@ -8,7 +8,7 @@
 
 class ConMySQL {
     public:
-    	ConMySQL();
+    	ConMySQL(std::string url);
     	~ConMySQL();
 
     	ExecuteResult execute(std::string query);

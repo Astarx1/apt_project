@@ -1,11 +1,11 @@
 /* Null, because instance will be initialized on demand. */
 #include "model/MySQLLink.h"
 
-ConMySQL::ConMySQL () {
+ConMySQL::ConMySQL (std::string url) {
 	initialized = false;
 	try {
         driver = get_driver_instance();
-        con = driver->connect("tcp://127.0.0.1:3306", MYSQL_USER, MYSQL_PWD);
+        con = driver->connect(url.c_str(), MYSQL_USER, MYSQL_PWD);
 
 	    /*sql::Statement* stmt = con->createStatement();
 	    std::string query = "CREATE DATABASE IF NOT EXISTS goranking";
@@ -14,13 +14,16 @@ ConMySQL::ConMySQL () {
 		std::cout << "MySQLLink.cpp - Request linked, deleting statemement" << std::endl;
 	  	delete stmt;*/
 
+        std::cout << "Setting db" << std::endl;
         con->setSchema("goranking");
         if(con->isValid()) {
 	        initialized = true;
 		    std::cout << "MySQLLink.cpp - Database connected" << std::endl;
         }
-	    else
+	    else {
+	    	std::cout << "Error when connecting, bad url " << url << std::endl;
 	    	throw std::exception();
+	    }
 
 	    /*stmt = con->createStatement();
 	    query = "CREATE TABLE IF NOT EXISTS GAMES(id_game INT PRIMARY KEY NOT NULL AUTO_INCREMENT, id_player_1 INT NOT NULL, level_player_1 FLOAT NOT NULL, id_player_2 INT NOT NULL, level_player_2 FLOAT NOT NULL, date_game INT NOT NULL, moves TEXT)";

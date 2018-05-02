@@ -12,17 +12,20 @@ using namespace Pistache;
 
 
 int main(int argc, char *argv[]) {
+    std::string url;
+
+    if (argc > 1) {
+        url = argv[1];
+        std::cout << "Using MySQL URL given in command line : " << url << std::endl;
+    }
+    else {
+        url = "tcp://127.0.0.1:3306";
+    }
+
     Port port(9080);
-    ConMySQL * msql = new ConMySQL(); 
+    ConMySQL * msql = new ConMySQL(url); 
     
     int thr = 2;
-
-    if (argc >= 2) {
-        port = std::stol(argv[1]);
-
-        if (argc == 3)
-            thr = std::stol(argv[2]);
-    }
 
     Address addr(Ipv4::any(), port);
 
