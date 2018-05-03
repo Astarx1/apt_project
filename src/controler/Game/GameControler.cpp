@@ -57,13 +57,13 @@ Game GameControler::create(int id_player_1, int id_player_2, std::string moves, 
     
     std::cout << "GameControler.cpp - creating the game..." << std::endl; 
     GameDB game_db(msql);
-	Game d = game_db.create_game(id_player_1, id_player_2, p1.getLevel(), p2.getLevel(), t, moves); 
-    
+	Game d = game_db.create_game(id_player_1, id_player_2, p1.getLevel(), p2.getLevel(), t, moves);  
+
     if (d.getId() != -1) {
 	    std::cout << "GameControler.cpp - Adding information about the winner ..." << std::endl;
 		GameInfoDB game_info_db(msql);
 		GameInformation gi = game_info_db.create_game_info(d.getId(), 0, std::to_string(winner)); 
-	    std::cout << "GameControler.cpp - Updating players ..." << std::endl;
+	    std::cout << "GameControler.cpp - Game Info created (" << gi.getId() << ") Updating players ..." << std::endl;
 	    update_players(p1, p2, winner);
     }
 

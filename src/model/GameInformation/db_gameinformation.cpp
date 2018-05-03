@@ -11,15 +11,18 @@ std::vector<GameInformation> GameInfoDB::read_gameinfos_from_game_id(int id) {
 	std::vector<GameInformation> ret;
 	try {
 		std::string req = "SELECT * FROM GAMESINFOS WHERE id_game=";
-		req = req + std::to_string(id);
+		req = req + std::to_string(id) + std::string(";");
+		std::cout << "db_gameinformation.cpp - Executing : " << req << std::endl;
+
 		ExecuteResult r = sql_link->execute(req);
 
 		while(r.get_link_result()->next()) {
 			GameInformation n;
 			n.setId(r.get_link_result()->getInt("id_info"));
 			n.setIdGame(r.get_link_result()->getInt("id_game"));
-			n.setType(r.get_link_result()->getInt("type"));
+			n.setType(r.get_link_result()->getInt("type_info"));
 			n.setValue(r.get_link_result()->getString("value_info"));
+			ret.push_back(n);
 		}
 	}
 	catch(...) {
@@ -36,7 +39,7 @@ GameInformation GameInfoDB::create_game_info(int id_game, int type, std::string 
 
 	try {
 		std::cout << "db_gameinformation.h - Creating DB request to create new game infos for game " << id_game << std::endl;
-		std::string req = std::string("INSERT INTO GAMESINFOS (id_game, type, value_info) ");
+		std::string req = std::string("INSERT INTO GAMESINFOS (id_game, type_info, value_info) ");
 		req = req + std::string("VALUES (") + std::to_string(id_game) + std::string(",") + std::to_string(type) + std::string(",");
 		req = req + value + std::string(");");
 

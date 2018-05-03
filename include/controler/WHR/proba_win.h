@@ -13,11 +13,13 @@
 #include "model/MySQLLink.h"
 #include "model/ExecuteResult.h"
 
-#define MIN_STEP 0.1
-#define STEP 1
+#define MIN_STEP 1.0
+#define STEP 0.1
 #define OMEGA 1
 #define STPI 2.506 
 #define ELO_CONSTANTE 400 
+#define MAXIMUM_ITER 200
+#define MIN_LOOP 5
 
 typedef struct likelihood_situation {
 	std::vector<double> d;

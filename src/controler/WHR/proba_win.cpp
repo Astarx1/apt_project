@@ -3,9 +3,13 @@
 
 void ProbaWin::running_algorithm(int round) {
 	running = true;	 
+	std::cout << "\n\n\nProba_win.cpp - Starting WHR Algorithm" << std::endl;
+
 	while(running && round != 0) {
 		update_pool_players();
+
 		for (auto p: ps) {
+			std::cout << "Proba_win.cpp - Doing player " << p.id << std::endl;
 			naive_max_log_implementation(p);
 		}
 		round--;
@@ -19,24 +23,41 @@ void ProbaWin::update_pool_players() {
 
 	gs.clear();
 	gs = gdb.read_games();
+	std::cout << "Proba_win.cpp - Games in the pool : " << gs.size() << std::endl;
 	
 	std::vector<Player> tmpps = pdb.read_players();
 	ps.clear();
 	for (auto p: tmpps) {
 		PlayerLinkedToGame tmp(p.getId());
+
 		for (int i = 0; i < gs.size(); ++i) {
 			std::vector<GameInformation> gis = gidb.read_gameinfos_from_game_id(gs[i].getId());
+			std::cout << "Proba_win.cpp - We found " << gis.size() << " informations for the game " << gs[i].getId() << std::endl;
+
 			for (auto gi: gis) { 
+				std::cout << "Proba_win.cpp - Information type : " << gi.getType() << std::endl;
+
 				if (gi.getType() == 0) {
-					int winner = std::stoi(gi.getValue());			
+					std::cout << "Proba_win.cpp - This game has a winner" << std::endl;
+
+					int winner = std::stoi(gi.getValue());	
+						std::cout << "Proba_win.cpp - Comparing " << gs[i].getIdPlayer1() << "/" << p.getId() << std::endl;
+
 					if(gs[i].getIdPlayer1() == p.getId()) {
+						std::cout << "Proba_win.cpp - Game added" << std::endl;
+
 						tmp.gs.push_back(&gs[i]);
 						if (winner == 1)
 							tmp.f.push_back(true);
 						else
 							tmp.f.push_back(false);
 					} 
+					
+					std::cout << "Proba_win.cpp - Comparing " << gs[i].getIdPlayer2() << "/" << p.getId() << std::endl;
+
 					if(gs[i].getIdPlayer2() == p.getId()) {
+						std::cout << "Proba_win.cpp - Game added" << std::endl;
+
 						tmp.gs.push_back(&gs[i]);
 						if (winner == 1)
 							tmp.f.push_back(false);
@@ -47,21 +68,29 @@ void ProbaWin::update_pool_players() {
 				}
 			}
 		}
+		ps.push_back(tmp);
 	}
-	//std::cout << "Proba_win.cpp - Players in the pool : " << std::endl;
+	std::cout << "Proba_win.cpp - Players in the pool : " << ps.size() << std::endl;
 }
 
 void ProbaWin::naive_max_log_implementation(PlayerLinkedToGame & p) {
 	LS l = likelihood(p);
 	double lh = l.gl;
-	double tmp_lh = lh + 1000;
+	double tmp_lh = lh - 10;
 
-	while (tmp_lh/lh > MIN_STEP) {
+	int i = 0;
+	if (p.gs.size() > 0)
+	while ((lh-tmp_lh > MIN_STEP || i < MIN_LOOP) && i < MAXIMUM_ITER) {
+		std::cout << "Proba_win.cpp - Current likelihood : " << lh << std::endl;
 		tmp_lh = lh;
 		for (int i = 1; i < p.gs.size(); ++i) {
-			p.gs[i]->setLevelPlayer1(p.gs[i]->getLevelPlayer1() + l.d[i-1]*STEP);
+			float nl = p.gs[i]->getLevelPlayer1() + l.d[i-1]*STEP;
+			std::cout << "Proba_win.cpp - New Level of the player " << nl << ", for derivative " << l.d[i-1] << std::endl;
+			p.gs[i]->setLevelPlayer1(nl);
 		}
+		i++;
 		l = likelihood(p);
+		double lh = l.gl;
 	}
 }
 
@@ -106,6 +135,6 @@ DD ProbaWin::compute_log_proba_victory (float l1, float l2) {
 
 double ProbaWin::compute_proba_victory(float l1, float l2) {
 	double p = 1 / (1+pow(10, 0 - (l1 - l2) / ELO_CONSTANTE));
-	std::cout << "GameControler.cpp - Proba victory computed : " << p << std::endl; 
+	std::cout << "Proba_win.cpp - Proba victory computed : " << p << std::endl; 
 	return p;
 }
