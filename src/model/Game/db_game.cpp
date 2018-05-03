@@ -110,6 +110,12 @@ Game GameDB::delete_game_from_game_id(int id_game) {
 		req = req + std::to_string(id_game);
 		sql_link->update(req);
 		ret.setId(id_game);	
+		ret.setIdPlayer1(0);
+		ret.setIdPlayer2(0);
+		ret.setLevelPlayer1(0);
+		ret.setLevelPlayer2(0);
+		ret.setDateGame(0);
+		ret.setMoves("None");
 	}
 	catch(...) {
 		std::cout << "db_player.cpp - Unable to delete game" << id_game << std::endl;		

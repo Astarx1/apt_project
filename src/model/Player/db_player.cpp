@@ -121,6 +121,9 @@ Player PlayerDB::delete_player_from_id(int id) {
 		std::string req = "DELETE FROM PLAYERS WHERE id_player=";
 		req = req + std::to_string(id);
 		sql_link->update(req);	
+		ret.setId(id);
+		ret.setLevel(0);
+		ret.setTrivia("none");
 	}
 	catch(...) {
 		std::cout << "db_player.cpp - Unable to delete player" << id << std::endl;		
