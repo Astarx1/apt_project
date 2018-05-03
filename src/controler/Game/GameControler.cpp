@@ -18,13 +18,24 @@ GameControler::GameControler(ConMySQL * msql) : msql(msql) {
 
 
 std::vector<Game> GameControler::get() {
-	std::cout << "GameControler.cpp - Controling get all players" << std::endl;
+	std::cout << "GameControler.cpp - Controling get all Games" << std::endl;
     GameDB game_db(msql);
 	std::vector<Game> t = game_db.read_games();
-	std::cout << "GameControler.cpp - Controling read for all players ended, returning the result" << std::endl;
+	std::cout << "GameControler.cpp - Controling read for all games ended, returning the result" << std::endl;
 
 	return t;
 }
+
+Game GameControler::get_from_id(int id) {
+	std::cout << "GameControler.cpp - Controling get game " << id << std::endl;
+    GameDB game_db(msql);
+	Game t = game_db.read_game_from_id(id);
+	std::cout << "GameControler.cpp - Controling read for game " << id << " ended, returning the result" << std::endl;
+
+	return t;
+}
+
+std::vector<Game> GameControler::get_from_player_id(int id){}
 
 Game GameControler::create(int id_player_1, int id_player_2, std::string moves) {
     std::cout << "GameControler.cpp - Getting informations about time..." << std::endl; 
@@ -70,7 +81,7 @@ Game GameControler::create(int id_player_1, int id_player_2, std::string moves, 
     std::cout << "Lets see what the Bayesian predictor is giving us ..." << std::endl;
     try {
     	ProbaWin championship(msql);
-    	championship.running_algorithm(1);
+    	championship.running_algorithm(10);
     }
     catch(...) {
     	std::cout << "Bayes failed me once again" << std::endl;

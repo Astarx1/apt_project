@@ -6,6 +6,8 @@ class GameControler {
 public:
 	GameControler(ConMySQL * msql);
 	std::vector<Game> get();
+	Game get_from_id(int id);
+	std::vector<Game> get_from_player_id(int id);
 	Game create(int id_player_1, int id_player_2, std::string moves);
 	Game create(int id_player_1, int id_player_2, std::string moves, int winner);
 	Game delete_from_id(int id);

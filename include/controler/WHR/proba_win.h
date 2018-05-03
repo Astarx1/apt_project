@@ -14,8 +14,8 @@
 #include "model/ExecuteResult.h"
 
 #define MIN_STEP 1.0
-#define STEP 0.1
-#define OMEGA 1
+#define STEP 1
+#define OMEGA 150
 #define STPI 2.506 
 #define ELO_CONSTANTE 400 
 #define MAXIMUM_ITER 200

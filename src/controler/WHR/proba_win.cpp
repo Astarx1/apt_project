@@ -14,6 +14,10 @@ void ProbaWin::running_algorithm(int round) {
 		}
 		round--;
 	}	 
+
+	for (auto g : gs) {
+		std::cout << "Level Player 1 : " << g.getLevelPlayer1() << ", Level Player 2 : " << g.getLevelPlayer2() << std::endl;  
+	}
 }
 
 void ProbaWin::update_pool_players() {
@@ -80,13 +84,20 @@ void ProbaWin::naive_max_log_implementation(PlayerLinkedToGame & p) {
 
 	int i = 0;
 	if (p.gs.size() > 0)
-	while ((lh-tmp_lh > MIN_STEP || i < MIN_LOOP) && i < MAXIMUM_ITER) {
+	while (i < MAXIMUM_ITER) {
 		std::cout << "Proba_win.cpp - Current likelihood : " << lh << std::endl;
 		tmp_lh = lh;
 		for (int i = 1; i < p.gs.size(); ++i) {
-			float nl = p.gs[i]->getLevelPlayer1() + l.d[i-1]*STEP;
-			std::cout << "Proba_win.cpp - New Level of the player " << nl << ", for derivative " << l.d[i-1] << std::endl;
-			p.gs[i]->setLevelPlayer1(nl);
+			if (p.id == p.gs[i]->getIdPlayer1()) {
+				float nl = p.gs[i]->getLevelPlayer1() + l.d[i]*STEP;
+				std::cout << "Proba_win.cpp - New Level of the player 1 " << nl << ", for derivative " << l.d[i-1] << std::endl;
+				p.gs[i]->setLevelPlayer1(nl);
+			}
+			else {
+				float nl = p.gs[i]->getLevelPlayer2() + l.d[i]*STEP;
+				std::cout << "Proba_win.cpp - New Level of the player 2 " << nl << ", for derivative " << l.d[i-1] << std::endl;
+				p.gs[i]->setLevelPlayer2(nl);
+			}
 		}
 		i++;
 		l = likelihood(p);
@@ -97,8 +108,14 @@ void ProbaWin::naive_max_log_implementation(PlayerLinkedToGame & p) {
 LS ProbaWin::likelihood(PlayerLinkedToGame & p) {
 	LS r;
 	for (int i=1; i < p.gs.size(); ++i) {
-		DD d = compute_likehood_situation(	p.gs[i]->getLevelPlayer1(), p.gs[i]->getDateGame(), p.gs[i-1]->getLevelPlayer1(), p.gs[i-1]->getDateGame(),
-											p.gs[i]->getLevelPlayer2(), p.f[i]);
+		DD d; 
+		if (p.id == p.gs[i]->getIdPlayer1())
+			d = compute_likehood_situation(	p.gs[i]->getLevelPlayer1(), p.gs[i]->getDateGame(), p.gs[i-1]->getLevelPlayer1(), p.gs[i-1]->getDateGame(),
+												p.gs[i]->getLevelPlayer2(), p.f[i]);
+		else
+			d = compute_likehood_situation(	p.gs[i]->getLevelPlayer2(), p.gs[i]->getDateGame(), p.gs[i-1]->getLevelPlayer2(), p.gs[i-1]->getDateGame(),
+												p.gs[i]->getLevelPlayer2(), p.f[i]);
+
 		r.gl += d.value;
 		r.d.push_back(d.derivative);
 	}
@@ -120,7 +137,7 @@ DD ProbaWin::compute_likehood_situation(float r1, int t1, float r2, int t2, floa
 
 DD ProbaWin::compute_log_proba_change(float l1, int t1, float l2, int t2) {
 	DD ret;
-	ret.derivative = (l2-l1)/OMEGA;
+	ret.derivative = (l1-l2)/OMEGA;
 	ret.value = std::log10(1/(std::sqrt(abs(t2-t1))*OMEGA*STPI)) - ((l1-l2)*(l1-l2)/(2*(t2-t1)*OMEGA));
 
 	return ret;

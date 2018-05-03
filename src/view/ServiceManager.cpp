@@ -99,6 +99,27 @@ void ServiceManager::post_new_game(const Rest::Request& request, Http::ResponseW
     }
 }
 
+void ServiceManager::get_game_from_id(const Rest::Request& request, Http::ResponseWriter response) {
+    try{
+        std::cout << "ServiceManager.cpp - Analysing request for getting all games" << std::endl; 
+        
+        std::vector<Game> ret = game_controler->get();
+        
+        Json::Value val;
+        for (int i=0; i < ret.size(); i++) {
+            val.append(ret[i].to_json());
+        }
+        std::string r = val.toStyledString();
+
+        std::cout << "ServiceManager.cpp - Sending answer for getting all games" << std::endl; 
+        response.send(Http::Code::Ok, r);       
+        std::cout << "ServiceManager.cpp - Answer sent for getting all games\n" << std::endl;
+    }
+    catch(...) {
+        std::cout << "ServiceManager.cpp - exception occured in the view in get_all_players" << std::endl;
+    }
+}
+
 void ServiceManager::get_all_games(const Rest::Request& request, Http::ResponseWriter response) {
     try{
         std::cout << "ServiceManager.cpp - Analysing request for getting all games" << std::endl; 

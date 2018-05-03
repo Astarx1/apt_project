@@ -31,11 +31,6 @@ if(CMAKE_THREAD_LIBS_INIT)
   target_link_libraries(tdrest "${CMAKE_THREAD_LIBS_INIT}")
 endif()
 
-# libmicrohttpd
-include_directories ("${PROJECT_SOURCE_DIR}/extern/libmicrohttpd/include")
-target_link_libraries(tdrest "${PROJECT_SOURCE_DIR}/extern/libmicrohttpd/lib/libmicrohttpd.so")
-
-
 include_directories ("/usr/include")
 target_link_libraries(tdrest "/usr/lib/x86_64-linux-gnu/libmysqlcppconn.so")
 # include_directories ("/usr/local/include")
